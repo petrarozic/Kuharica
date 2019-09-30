@@ -17,12 +17,13 @@ namespace Cookbook.Models
 
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<RecipeIngredient> RecipeIngredients { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Recipe>()
-                .HasMany(r => r.Ingredients)
-                .WithOne(s => s.Recipe);
+            builder.Entity<RecipeIngredient>()
+                .HasKey(x => new { x.RecipeId, x.IngredientId });
+
             base.OnModelCreating(builder);
         }
     }

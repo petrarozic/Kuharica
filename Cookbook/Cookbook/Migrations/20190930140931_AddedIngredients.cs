@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Cookbook.Migrations
 {
-    public partial class AddedIngredients : Migration
+    public partial class AddedRecipeRecipeIngredients : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Ingredients",
+                name: "RecipeRecipeIngredients",
                 columns: table => new
                 {
                     IngredientId = table.Column<int>(nullable: false)
@@ -19,9 +19,9 @@ namespace Cookbook.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Ingredients", x => x.IngredientId);
+                    table.PrimaryKey("PK_RecipeRecipeIngredients", x => x.IngredientId);
                     table.ForeignKey(
-                        name: "FK_Ingredients_Recipes_RecipeId",
+                        name: "FK_RecipeRecipeIngredients_Recipes_RecipeId",
                         column: x => x.RecipeId,
                         principalTable: "Recipes",
                         principalColumn: "RecipeId",
@@ -29,15 +29,15 @@ namespace Cookbook.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ingredients_RecipeId",
-                table: "Ingredients",
+                name: "IX_RecipeRecipeIngredients_RecipeId",
+                table: "RecipeRecipeIngredients",
                 column: "RecipeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Ingredients");
+                name: "RecipeRecipeIngredients");
         }
     }
 }

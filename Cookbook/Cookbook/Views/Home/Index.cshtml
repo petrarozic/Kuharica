@@ -19,11 +19,11 @@ else
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var ingredient in recipe.Ingredients)
+                    @foreach (var recipeIngredient in recipe.RecipeIngredients)
                     { 
                         <tr>
-                            <td>@ingredient.Amount</td>
-                            <td>@ingredient.Name</td>
+                            <td>@recipeIngredient.Amount @recipeIngredient.MeasuringUnit</td>
+                            <td>@recipeIngredient.Ingredient.Name</td>
                         </tr>
                     }
                 </tbody>
