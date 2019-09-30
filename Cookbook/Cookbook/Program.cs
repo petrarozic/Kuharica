@@ -17,13 +17,14 @@ namespace Cookbook
         public static void Main(string[] args)
         {
             var host = CreateWebHostBuilder(args).Build();
+            DbInitializer.Seed(host.Services.CreateScope().ServiceProvider.GetRequiredService<AppDbContext>());
             //using (var scope = host.Services.CreateScope())
             //{
             //    var services = scope.ServiceProvider;
             //    try
             //    {
             //        var context = services.GetRequiredService<AppDbContext>();
-            //        //DbInitializer.Seed(context);
+            //        DbInitializer.Seed(context);
             //    }
             //    catch (Exception)
             //    {

@@ -15,6 +15,8 @@ namespace Cookbook.Models
 
         }
 
+        public DbSet<Recipe> Recipes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
