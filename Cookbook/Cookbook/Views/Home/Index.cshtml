@@ -1,6 +1,5 @@
 ﻿@model HomeViewModel
-
-Recipes
+<h1>Recipes</h1>
 
 @if (Model.Recipes.Count == 0)
 {
@@ -11,7 +10,26 @@ else
     foreach (var recipe in Model.Recipes)
     {
         <div>
-            Name: @recipe.Name
+            <h4>Name: @recipe.Name</h4>
+
+           <table class="element">
+                <thead>
+                    <tr>
+                        <th scope="col">Ingridients</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var ingredient in recipe.Ingredients)
+                    { 
+                        <tr>
+                            <td>@ingredient.Amount</td>
+                            <td>@ingredient.Name</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     }
 }
+
+

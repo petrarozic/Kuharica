@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 
 namespace Cookbook.Models
 {
-    public class Recipe
+    public class Ingredient
     {
-        public int RecipeId { get; set; }
+        public int IngredientId { get; set; }
         public string Name { get; set; }
+        public string Amount { get; set; }
 
-        public ICollection<Ingredient> Ingredients { get; set; }
+        public Recipe Recipe { get; set; }
     }
 }

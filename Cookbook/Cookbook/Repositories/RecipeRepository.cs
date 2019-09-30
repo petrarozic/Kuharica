@@ -1,5 +1,6 @@
 ﻿using Cookbook.Interfaces;
 using Cookbook.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace Cookbook.Repositories
 
         public IEnumerable<Recipe> GetAllRecipe()
         {
-            return _appDbContext.Recipes;
+            return _appDbContext.Recipes.Include(r => r.Ingredients);
         }
     }
 }
