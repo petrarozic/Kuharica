@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cookbook.Interfaces;
 using Cookbook.Models;
+using Cookbook.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -30,6 +32,9 @@ namespace Cookbook
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<AppDbContext>();
+
+            services.AddTransient<IRecipeRepository, RecipeRepository>();
+
             services.AddMvc();
         }
 
@@ -38,7 +43,7 @@ namespace Cookbook
         {
             //app.UseDeveloperExceptionPage();
             //app.UseStatusCodePages(); //da bi javilo error?
-            //app.UseStaticFiles();
+            app.UseStaticFiles();
             app.UseAuthentication(); //Za logiranje
             app.UseMvcWithDefaultRoute();
         }

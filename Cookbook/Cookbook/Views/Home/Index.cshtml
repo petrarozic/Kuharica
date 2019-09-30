@@ -1,1 +1,17 @@
-﻿Recipes
+﻿@model HomeViewModel
+
+Recipes
+
+@if (Model.Recipes.Count == 0)
+{
+    <span>No recipes for display</span>
+}
+else
+{
+    foreach (var recipe in Model.Recipes)
+    {
+        <div>
+            Name: @recipe.Name
+        </div>
+    }
+}

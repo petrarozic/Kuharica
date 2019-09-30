@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cookbook.Interfaces;
+using Cookbook.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,10 +14,22 @@ namespace Cookbook.Controllers
     [Authorize]
     public class HomeController : Controller
     {
+        private readonly IRecipeRepository _recipeRepository;
+
+        public HomeController(IRecipeRepository recipeRepository)
+        {
+            _recipeRepository = recipeRepository;
+        }
+
         // GET: /<controller>/
         public IActionResult Index()
         {
-            return View();
+            HomeViewModel homeViewModel = new HomeViewModel()
+            {
+                Recipes = _recipeRepository.GetAllRecipe().OrderBy(r => r.Name).ToList()
+            };
+
+            return View(homeViewModel);
         }
     }
 }
