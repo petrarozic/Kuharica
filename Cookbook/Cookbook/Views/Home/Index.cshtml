@@ -9,26 +9,40 @@ else
 {
     foreach (var recipe in Model.Recipes)
     {
-        <div>
-            <h4>Name: @recipe.Name</h4>
+    <div>
+        <h4>Name: @recipe.Name</h4>
 
-           <table class="element">
-                <thead>
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">Ingridients</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var recipeIngredient in recipe.RecipeIngredients)
+                {
                     <tr>
-                        <th scope="col">Ingridients</th>
+                        <td>@recipeIngredient.Amount @recipeIngredient.MeasuringUnit</td>
+                        <td>@recipeIngredient.Ingredient.Name</td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach (var recipeIngredient in recipe.RecipeIngredients)
-                    { 
-                        <tr>
-                            <td>@recipeIngredient.Amount @recipeIngredient.MeasuringUnit</td>
-                            <td>@recipeIngredient.Ingredient.Name</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+                }
+            </tbody>
+        </table>
+
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">Procedure</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td>@recipe.Procedure</td>
+                    </tr>
+            </tbody>
+        </table>
+
+    </div>
     }
 }
 

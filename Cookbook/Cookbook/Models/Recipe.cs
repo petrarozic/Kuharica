@@ -9,6 +9,7 @@ namespace Cookbook.Models
     {
         public int RecipeId { get; set; }
         public string Name { get; set; }
+        public string Procedure { get; set; }
 
         public ICollection<RecipeIngredient> RecipeIngredients { get; set; }
     }

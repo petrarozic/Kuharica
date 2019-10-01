@@ -178,6 +178,19 @@ namespace Cookbook.Models
                 };
 
                 context.SaveChanges();
+
+                recept0.Procedure = "Razvaljas tijesto. Razbacas meso. Zarolas i stavis pec.";
+                recept1.Procedure = "Postavis tijesto. Stavis meso. Ponavljas postupak. Stavis peć.";
+                recept2.Procedure = "Izdinstas meso sa lukom. Skuhas tijesteninu i dodas je.";
+                recept3.Procedure = "Prokuhas grah. Dodas zelje i kuhas jos neko vrijeme.";
+                recept4.Procedure = "Rastegnes tijesto. Poslozis sunku. Poslozis sir. Poslozis gljive. Stavis pec.";
+                recept5.Procedure = "Izdinstas luk i meso. Dodas rizu i kuhas jos 15min.";
+                recept6.Procedure = "Skuhas krumpir. Skuhas tijesto. Pomijesas zajedno krumpir i tijesto.";
+                recept7.Procedure = "Nasijeckas spek. Sprzis spek na ulju. Dodas razmucena jaja i speces.";
+                recept8.Procedure = "Prerezes pecivo. Dodas peceno meso. Dodas sir.";
+                recept9.Procedure = "Prodinstas luk sa mesom. Dodas mahune i kuhas jos neko vrijeme.";
+
+                context.SaveChanges();
             }
         }
     }
