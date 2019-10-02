@@ -24,6 +24,7 @@
                 <label asp-for="Recipe.Ingredients[0].MeasuringUnit">MeasuringUnit</label>
                 <input asp-for="Recipe.Ingredients[0].MeasuringUnit" id="ingredient-measuringUnit-0" />
             </div>
+            <img src="~/images/delete-icon.png" alt="Delete!" style="height: 30px; width: 25px" onclick="deleteIngredient()">
         </div>
     </div>
     <img src="~/images/plus-icon.png" alt="New ingredient" id="addInputsForIngredient" style="height: 30px; width: 25px">
@@ -77,10 +78,33 @@
         div3.appendChild(labelMeasuringUnit);
         div3.appendChild(inputMeasuringUnit);
 
+        var img1 = document.createElement("img");
+        img1.src = "/images/delete-icon.png";
+        img1.alt = "Delete!";
+        img1.style = "height: 30px; width: 25px";
+        img1.onclick = deleteIngredient;
+
         ingredientDiv.appendChild(div1);
         ingredientDiv.appendChild(div2);
         ingredientDiv.appendChild(div3);
+        ingredientDiv.appendChild(img1);
 
         document.getElementById("Ingredients").appendChild(ingredientDiv);
+    }
+
+    function deleteIngredient() {
+        var ingredientId = event.srcElement.parentElement.id;
+        console.log("UKLANJAM ING ID = " + ingredientId);
+
+        var k;
+        for (var k = parseInt(ingredientId); k < $("#Ingredients").children().length - 1; k++) {
+            kNext = k + 1;
+            $("#ingredient-name-" + k).val($("#ingredient-name-" + kNext).val());
+            $("#ingredient-amount-" + k).val($("#ingredient-amount-" + kNext).val());
+            $("#ingredient-measuringUnit-" + k).val($("#ingredient-measuringUnit-" + kNext).val());
+        }
+
+        $("#Ingredients").children().last().remove();
+        ingredientNum -= 1;
     }
 </script>
