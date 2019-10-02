@@ -88,6 +88,17 @@ namespace Cookbook.Controllers
                 recipe.RecipeIngredients.Add(recipeIngredient);
             }
 
+            recipe.Steps = new List<Step>();
+            foreach(var x in recipeViewModel.Recipe.Steps)
+            {
+                Step step = new Step()
+                {
+                    Order = x.Order,
+                    Description = x.Description
+                };
+                recipe.Steps.Add(step);
+            }
+
             _recipeRepository.AddRecipe(recipe);
             return RedirectToAction("Index", "Recipe", new { recipeId = recipe.RecipeId});
         }

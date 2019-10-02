@@ -28,6 +28,22 @@
         </div>
     </div>
     <img src="~/images/plus-icon.png" alt="New ingredient" id="addInputsForIngredient" style="height: 30px; width: 25px">
+
+    <div class="name">Steps:</div>
+    <div id="Steps">
+        <div id="0">
+            <div>
+                <label asp-for="Recipe.Steps[0].Order">Order</label>
+                <input asp-for="Recipe.Steps[0].Order" id="step-order-0" />
+            </div>
+            <div>
+                <label asp-for="Recipe.Steps[0].Description">StepDescription</label>
+                <input asp-for="Recipe.Steps[0].Description" id="step-input-0" />
+            </div>
+            <img src="~/images/delete-icon.png" alt="Delete!" style="height: 30px; width: 25px" onclick="deleteStep()">
+        </div>
+    </div>
+    <img src="~/images/plus-icon.png" alt="New step" style="height: 30px; width: 25px" onclick="addInputsForStep()"/>
     <br />
     <input type="submit" class="btn btn-primary" value="Add recipe" />
 </form>
@@ -95,7 +111,6 @@
     function deleteIngredient() {
         if (ingredientNum > 0) {
             var ingredientId = event.srcElement.parentElement.id;
-            console.log("UKLANJAM ING ID = " + ingredientId);
 
             var k;
             for (var k = parseInt(ingredientId); k < $("#Ingredients").children().length - 1; k++) {
@@ -107,6 +122,68 @@
 
             $("#Ingredients").children().last().remove();
             ingredientNum -= 1;
+        }
+        }
+
+    var stepNum = 0;
+
+    function addInputsForStep() {
+        stepNum += 1;
+
+        var stepDiv = document.createElement("div");
+        stepDiv.id = stepNum;
+
+        var div1 = document.createElement("div");
+        var labelOrder = document.createElement("label");
+        labelOrder.htmlFor = 'Recipe.Steps[' + stepNum + '].Order';
+        labelOrder.innerHTML = "Order";
+        var inputOrder = document.createElement("input");
+        inputOrder.htmlFor = 'Recipe.Steps[' + stepNum + '].Order';
+        inputOrder.name = 'Recipe.Steps[' + stepNum + '].Order';
+        inputOrder.id = 'step-order-' + stepNum;
+        div1.appendChild(labelOrder);
+        div1.appendChild(inputOrder);
+
+        var div2 = document.createElement("div");
+        var labelDescription = document.createElement("label");
+        labelDescription.htmlFor = 'Recipe.Steps[' + stepNum + '].Description';
+        labelDescription.innerHTML = "StepDescription";
+        var inputDescription = document.createElement("input");
+        inputDescription.htmlFor = 'Recipe.Steps[' + stepNum + '].Description';
+        inputDescription.name = 'Recipe.Steps[' + stepNum + '].Description';
+        inputDescription.id = 'step-input-' + stepNum;
+        div2.appendChild(labelDescription);
+        div2.appendChild(inputDescription);
+
+        var img1 = document.createElement("img");
+        img1.src = "/images/delete-icon.png";
+        img1.alt = "Delete!";
+        img1.style = "height: 30px; width: 25px";
+        img1.onclick = deleteStep;
+
+        stepDiv.appendChild(div1);
+        stepDiv.appendChild(div2);
+
+        stepDiv.appendChild(div1);
+        stepDiv.appendChild(div2);
+        stepDiv.appendChild(img1);
+
+        document.getElementById("Steps").appendChild(stepDiv);
+        }
+
+    function deleteStep() {
+        if (stepNum > 0) {
+            var stepId = event.srcElement.parentElement.id;
+
+            var k;
+            for (k = parseInt(stepId); k < $("#Steps").children().length - 1; k++) {
+                kNext = k + 1;
+                $("#step-input-" + k).val($("#step-input-" + kNext).val());
+                $("#step-order-" + k).val($("#step-order-" + kNext).val());
+            }
+
+            $("#Steps").children().last().remove();
+            stepNum -= 1;
         }
     }
 </script>
