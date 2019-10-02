@@ -1,4 +1,5 @@
-﻿using Cookbook.Models;
+﻿using Cookbook.DTO;
+using Cookbook.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,6 @@ namespace Cookbook.ViewModels
 {
     public class HomeViewModel
     {
-        public List<Recipe> Recipes { get; set; }
+        public List<RecipeDTO> Recipes { get; set; }
     }
 }
