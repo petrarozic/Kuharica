@@ -40,6 +40,8 @@
                 <label asp-for="Recipe.Steps[0].Description">StepDescription</label>
                 <input asp-for="Recipe.Steps[0].Description" id="step-input-0" />
             </div>
+            <img src="~/images/up-arrow.png" style="height: 30px; width: 25px" alt="Up!" onclick="upButton()">
+            <img src="~/images/down-arrow.png" style="height: 30px; width: 25px" alt="Down!" onclick="downButton()">
             <img src="~/images/delete-icon.png" alt="Delete!" style="height: 30px; width: 25px" onclick="deleteStep()">
         </div>
     </div>
@@ -156,10 +158,22 @@
         div2.appendChild(inputDescription);
 
         var img1 = document.createElement("img");
-        img1.src = "/images/delete-icon.png";
-        img1.alt = "Delete!";
+        img1.src = "/images/up-arrow.png";
+        img1.alt = "Up!";
         img1.style = "height: 30px; width: 25px";
-        img1.onclick = deleteStep;
+        img1.onclick = upButton;
+
+        var img2 = document.createElement("img");
+        img2.src = "/images/down-arrow.png";
+        img2.alt = "Down!";
+        img2.style = "height: 30px; width: 25px";
+        img2.onclick = downButton;
+
+        var img3 = document.createElement("img");
+        img3.src = "/images/delete-icon.png";
+        img3.alt = "Delete!";
+        img3.style = "height: 30px; width: 25px";
+        img3.onclick = deleteStep;
 
         stepDiv.appendChild(div1);
         stepDiv.appendChild(div2);
@@ -167,6 +181,8 @@
         stepDiv.appendChild(div1);
         stepDiv.appendChild(div2);
         stepDiv.appendChild(img1);
+        stepDiv.appendChild(img2);
+        stepDiv.appendChild(img3);
 
         document.getElementById("Steps").appendChild(stepDiv);
         }
@@ -184,6 +200,41 @@
 
             $("#Steps").children().last().remove();
             stepNum -= 1;
+        }
+        }
+
+    function downButton() {
+        var stepId = event.srcElement.parentElement.id;
+        console.log("POMAKNI DOLE ID = " + stepId);
+
+        if ($("#Steps").children().last().attr('id') != $("#Steps").children().get(parseInt(stepId)).id) {
+            var nextStepId = event.srcElement.parentElement.nextElementSibling.id;
+            var str = $("#step-input-" + stepId).val();
+            var order = $("#step-order-" + stepId).val();
+            $("#step-input-" + stepId).val($("#step-input-" + nextStepId).val());
+            $("#step-input-" + nextStepId).val(str);
+            $("#step-order-" + stepId).val($("#step-order-" + nextStepId).val());
+            $("#step-order-" + nextStepId).val(order);
+            console.log("pomaknuo sam ih dole");
+        }
+    }
+
+    function upButton() {
+        var stepId = event.srcElement.parentElement.id;
+        console.log("POMAKNI gore ID = " + stepId);
+
+        if ($("#Steps").children().first().attr('id') != $("#Steps").children().get(parseInt(stepId)).id) {
+            var previousStepId = event.srcElement.parentElement.previousElementSibling.id;
+            var str = $("#step-input-" + previousStepId).val();
+            console.log("str = " + str);
+            var order = $("#step-order-" + previousStepId).val();
+            console.log("order = " + order);
+            $("#step-input-" + previousStepId).val($("#step-input-" + stepId).val());
+            $("#step-input-" + stepId).val(str);
+
+            $("#step-order-" + previousStepId).val($("#step-order-" + stepId).val());
+            $("#step-order-" + stepId).val(order);
+            console.log("pomaknuo sam ih gore");
         }
     }
 </script>
