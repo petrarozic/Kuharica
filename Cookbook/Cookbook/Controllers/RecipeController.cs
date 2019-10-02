@@ -76,6 +76,18 @@ namespace Cookbook.Controllers
             Recipe recipe = new Recipe();
             recipe.Name = recipeViewModel.Recipe.Name;
 
+            recipe.RecipeIngredients = new List<RecipeIngredient>();
+            foreach (var x in recipeViewModel.Recipe.Ingredients)
+            {
+                RecipeIngredient recipeIngredient = new RecipeIngredient()
+                {
+                    Ingredient = new Ingredient() { Name = x.Name },
+                    Amount = x.Amount,
+                    MeasuringUnit = x.MeasuringUnit
+                };
+                recipe.RecipeIngredients.Add(recipeIngredient);
+            }
+
             _recipeRepository.AddRecipe(recipe);
             return RedirectToAction("Index", "Recipe", new { recipeId = recipe.RecipeId});
         }
