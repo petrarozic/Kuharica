@@ -9,44 +9,55 @@ else
 {
     foreach (var recipe in Model.Recipes)
     {
-    <div>
-        <h4>Name: @recipe.Name</h4>
+        <div>
+            <h4>Name: @recipe.Name</h4>
 
-        <table>
-            <thead>
-                <tr>
-                    <th scope="col">Ingridients</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var recipeIngredient in recipe.RecipeIngredients)
-                {
+            <table>
+                <thead>
                     <tr>
-                        <td>@recipeIngredient.Amount @recipeIngredient.MeasuringUnit</td>
-                        <td>@recipeIngredient.Ingredient.Name</td>
+                        <th scope="col">Ingridients</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-        
-        <table>
-            <thead>
-                <tr>
-                    <th scope="col">Steps</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var step in recipe.Steps)
-                {
+                </thead>
+                <tbody>
+                    @foreach (var recipeIngredient in recipe.RecipeIngredients)
+                    {
+                        <tr>
+                            <td>@recipeIngredient.Amount @recipeIngredient.MeasuringUnit</td>
+                            <td>@recipeIngredient.Ingredient.Name</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <table>
+                <thead>
                     <tr>
-                        <td>@step.Order</td>
-                        <td>@step.Description</td>
+                        <th scope="col">Steps</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    @foreach (var step in recipe.Steps)
+                    {
+                        <tr>
+                            <td>@step.Order</td>
+                            <td>@step.Description</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     }
 }
 
+<script>
+    $(document).ready(function () {
+        $(".recipe").on('click', function (e) {
+            showRecipe(e.target.id);
+        });
+    });
 
+    function showRecipe(recipeId) {
+        console.log("Ucitaj recept sa ID= " + recipeId);
+        window.location.href = "/Recipe/" + recipeId;
+    }
+</script>
