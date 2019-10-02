@@ -18,14 +18,69 @@
             </div>
             <div>
                 <label asp-for="Recipe.Ingredients[0].Amount">Amount</label>
-                <input asp-for="Recipe.Ingredients[0].Amount" id="ingredient-amount-0"/>
+                <input asp-for="Recipe.Ingredients[0].Amount" id="ingredient-amount-0" />
             </div>
             <div>
                 <label asp-for="Recipe.Ingredients[0].MeasuringUnit">MeasuringUnit</label>
-                <input asp-for="Recipe.Ingredients[0].MeasuringUnit" id="ingredient-measuringUnit-0"/>
+                <input asp-for="Recipe.Ingredients[0].MeasuringUnit" id="ingredient-measuringUnit-0" />
             </div>
         </div>
     </div>
-
+    <img src="~/images/plus-icon.png" alt="New ingredient" id="addInputsForIngredient" style="height: 30px; width: 25px">
+    <br />
     <input type="submit" class="btn btn-primary" value="Add recipe" />
 </form>
+
+<script>
+    $(document).ready(function () {
+        $("#addInputsForIngredient").click(addInputsForIngredient);
+    });
+
+    var ingredientNum = 0;
+
+    function addInputsForIngredient() {
+        ingredientNum += 1;
+
+        var ingredientDiv = document.createElement("div");
+        ingredientDiv.id = ingredientNum;
+
+        var div1 = document.createElement("div");
+        var labelName = document.createElement("label");
+        labelName.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].Name';
+        labelName.innerHTML = "Name";
+        var inputName = document.createElement("input");
+        inputName.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].Name';
+        inputName.name = 'Recipe.Ingredients[' + ingredientNum + '].Name';
+        inputName.id = 'ingredient-name-' + ingredientNum;
+        div1.appendChild(labelName);
+        div1.appendChild(inputName);
+
+        var div2 = document.createElement("div");
+        var labelAmount = document.createElement("label");
+        labelAmount.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].Amount';
+        labelAmount.innerHTML = "Amount";
+        var inputAmount = document.createElement("input");
+        inputAmount.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].Amount';
+        inputAmount.name = 'Recipe.Ingredients[' + ingredientNum + '].Amount';
+        inputAmount.id = 'ingredient-amount-' + ingredientNum;
+        div2.appendChild(labelAmount);
+        div2.appendChild(inputAmount);
+
+        var div3 = document.createElement("div");
+        var labelMeasuringUnit = document.createElement("label");
+        labelMeasuringUnit.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].MeasuringUnit';
+        labelMeasuringUnit.innerHTML = "MeasuringUnit";
+        var inputMeasuringUnit = document.createElement("input");
+        inputMeasuringUnit.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].MeasuringUnit';
+        inputMeasuringUnit.name = 'Recipe.Ingredients[' + ingredientNum + '].MeasuringUnit';
+        inputMeasuringUnit.id = 'ingredient-measuringUnit-' + ingredientNum;
+        div3.appendChild(labelMeasuringUnit);
+        div3.appendChild(inputMeasuringUnit);
+
+        ingredientDiv.appendChild(div1);
+        ingredientDiv.appendChild(div2);
+        ingredientDiv.appendChild(div3);
+
+        document.getElementById("Ingredients").appendChild(ingredientDiv);
+    }
+</script>
