@@ -1,0 +1,82 @@
+﻿body {
+    background-image: url('/images/background.png');
+    background-repeat: repeat;
+}
+
+.title {
+    font-size: 3rem;
+    font-weight: bold;
+    padding: 1rem;
+}
+
+/*-----------------------------------*/
+/*-------NewRecipe-------------------*/
+/*-----------------------------------*/
+.flex-container-column {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.flex-container-column div.flex-container-row {
+    margin-top: 1rem;
+}
+
+.flex-container-row {
+    display: flex;
+    flex-wrap: wrap;
+    /*background-color: DodgerBlue;*/
+}
+
+.flex-container-row > div {
+    /*background-color: #f1f1f1;*/
+    text-align: center;
+}
+
+.name {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-top: 1rem;
+    margin-left: 1rem;
+}
+
+.section {
+    margin: 0.5rem;
+    background: rgb(241, 212, 212, 0.9);
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+}
+
+.label {
+    display: flex;
+    padding-top: 0.75rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    font-size: 100%;
+    line-height: unset;
+    color: black;
+    font-weight: unset;
+}
+
+.form-control {
+    margin-top: 0.2rem;
+}
+
+.icon {
+    height: 30px;
+    width: 25px;
+    margin: 2px;
+    border-radius: 0.25rem;
+    padding: 1px;
+}
+
+.color {
+    background-color: rgb(241, 190, 190);
+    border: none;
+    color: black;
+}
+
+.buttons {
+    float: right;
+}

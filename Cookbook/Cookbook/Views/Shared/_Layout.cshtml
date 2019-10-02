@@ -7,19 +7,13 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Cookbook</title>
+    <title>Cookbook</title>
+    <link rel="stylesheet" href="~/Identity/lib/bootstrap/dist/css/bootstrap.css" />
 
-    <environment include="Development">
-        <link rel="stylesheet" href="~/Identity/lib/bootstrap/dist/css/bootstrap.css" />
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
-              asp-fallback-href="~/Identity/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-    </environment>
     <link rel="stylesheet" href="~/Identity/css/site.css" />
 
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <link rel="stylesheet" href="~/content/StyleSheet.css" />
 
 </head>
 <body>
@@ -33,9 +27,9 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a href="~/" class="navbar-brand">Cookbook</a>
+                <a asp-controller="Recipe" asp-action="NewRecipe" class="navbar-brand">Add new recipe</a>
             </div>
             <div class="navbar-collapse collapse">
-                <a asp-controller="Recipe" asp-action="NewRecipe" class="navbar-brand">Add new recipe</a>
                 @{
                     var result = Engine.FindView(ViewContext, "_LoginPartial", isMainPage: false);
                 }

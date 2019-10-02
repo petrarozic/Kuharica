@@ -1,57 +1,86 @@
 ﻿@model RecipeViewModel
 
-<div>New recipe</div>
+<div class="flex-container-column">
+    <div class="title">New recipe</div>
 
-<form asp-action="AddNewRecipe" method="post" class="" role="form">
+    <form asp-action="AddNewRecipe" method="post" role="form">
 
-    <div>
-        <label asp-for="Recipe.Name">Recipe name</label>
-        <input asp-for="Recipe.Name" />
-    </div>
-
-    <div>Ingredients:</div>
-    <div id="Ingredients">
-        <div id="0">
-            <div>
-                <label asp-for="Recipe.Ingredients[0].Name">Name</label>
-                <input asp-for="Recipe.Ingredients[0].Name" id="ingredient-name-0" />
+        <div class="section">
+            <div class="flex-container-row">
+                <div>
+                    <label asp-for="Recipe.Name" class="label">Recipe name</label>
+                </div>
+                <div>
+                    <input asp-for="Recipe.Name" class="form-control"/>
+                </div>
             </div>
-            <div>
-                <label asp-for="Recipe.Ingredients[0].Amount">Amount</label>
-                <input asp-for="Recipe.Ingredients[0].Amount" id="ingredient-amount-0" />
-            </div>
-            <div>
-                <label asp-for="Recipe.Ingredients[0].MeasuringUnit">MeasuringUnit</label>
-                <input asp-for="Recipe.Ingredients[0].MeasuringUnit" id="ingredient-measuringUnit-0" />
-            </div>
-            <img src="~/images/delete-icon.png" alt="Delete!" style="height: 30px; width: 25px" onclick="deleteIngredient()">
         </div>
-    </div>
-    <img src="~/images/plus-icon.png" alt="New ingredient" id="addInputsForIngredient" style="height: 30px; width: 25px">
 
-    <div class="name">Steps:</div>
-    <div id="Steps">
-        <div id="0">
-            <div>
-                <label>1.</label>
+        <div class="section">
+            <div class="name" asp-for="Ingredients">Ingredients:</div>
+            <div class="flex-container-column">
+                <div id="Ingredients">
+                    <div id="0">
+                        <div class="flex-container-row">
+                            <label asp-for="Recipe.Ingredients[0].Name" class="label">Name</label>
+                            <div>
+                                <input asp-for="Recipe.Ingredients[0].Name" id="ingredient-name-0" class="form-control"/>
+                            </div>
+
+                            <label asp-for="Recipe.Ingredients[0].Amount" class="label">Amount</label>
+                            <div>
+                                <input asp-for="Recipe.Ingredients[0].Amount" id="ingredient-amount-0" class="form-control"/>
+                            </div>
+
+                            <label asp-for="Recipe.Ingredients[0].MeasuringUnit" class="label">MeasuringUnit</label>
+                            <div>
+                                <input asp-for="Recipe.Ingredients[0].MeasuringUnit" id="ingredient-measuringUnit-0" class="form-control"/>
+                            </div>
+                            <img src="~/images/delete-icon.png" class="icon color" alt="Delete!">
+                        </div>
+                    </div>
+                </div>
+                <img src="~/images/plus-icon.png" class="icon color" alt="New ingredient" id="addInputsForIngredient">
             </div>
-            <div>
-                <label asp-for="Recipe.Steps[0].Description">StepDescription</label>
-                <input asp-for="Recipe.Steps[0].Description" id="step-input-0" />
-            </div>
-            <img src="~/images/up-arrow.png" style="height: 30px; width: 25px" alt="Up!" onclick="upButton()">
-            <img src="~/images/down-arrow.png" style="height: 30px; width: 25px" alt="Down!" onclick="downButton()">
-            <img src="~/images/delete-icon.png" alt="Delete!" style="height: 30px; width: 25px" onclick="deleteStep()">
         </div>
-    </div>
-    <img src="~/images/plus-icon.png" alt="New step" style="height: 30px; width: 25px" onclick="addInputsForStep()"/>
-    <br />
-    <input type="submit" class="btn btn-primary" value="Add recipe" />
-</form>
+
+        <div class="section">
+            <div class="name">Steps:</div>
+            <div class="flex-container-column section">
+                <div id="Steps">
+                    <div id="0">
+                        <div class="flex-container-row">
+                            <label class="label">1.</label>
+
+                            <label asp-for="Recipe.Steps[0].Description" class="label">StepDescription</label>
+                            <div id="description" class="">
+                                <input asp-for="Recipe.Steps[0].Description" class="form-control step-input" id="step-input-0" required maxlength="40" />
+                            </div>
+
+                            <img src="~/images/up-arrow.png" class="icon color" alt="Up!">
+                            <img src="~/images/down-arrow.png" class="icon color" alt="Down!">
+                            <img src="~/images/delete-icon.png" class="icon color" alt="Delete!">
+                        </div>
+                    </div>
+                </div>
+                <img src="~/images/plus-icon.png" class="icon color" alt="New step" id="addInputsForStep">
+            </div>
+        </div>
+
+        <div class="buttons">
+            <input type="submit" class="btn btn-primary color" value="Add recipe" />
+        </div>
+    </form>
+</div>
 
 <script>
     $(document).ready(function () {
         $("#addInputsForIngredient").click(addInputsForIngredient);
+        $("#addInputsForStep").click(addInputsForStep);
+        $("#Ingredients img").click(deleteIngredient);
+        $("#Steps img")[0].onclick = upButton;
+        $("#Steps img")[1].onclick = downButton;
+        $("#Steps img")[2].onclick = deleteStep;
     });
 
     var ingredientNum = 0;
@@ -63,55 +92,66 @@
         ingredientDiv.id = ingredientNum;
 
         var div1 = document.createElement("div");
+        div1.className = "flex-container-row";
+
         var labelName = document.createElement("label");
         labelName.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].Name';
+        labelName.className = "label";
         labelName.innerHTML = "Name";
+        var divName = document.createElement("div");
         var inputName = document.createElement("input");
         inputName.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].Name';
         inputName.name = 'Recipe.Ingredients[' + ingredientNum + '].Name';
         inputName.id = 'ingredient-name-' + ingredientNum;
-        div1.appendChild(labelName);
-        div1.appendChild(inputName);
+        inputName.className = "form-control";
+        divName.appendChild(inputName);
 
-        var div2 = document.createElement("div");
         var labelAmount = document.createElement("label");
         labelAmount.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].Amount';
+        labelAmount.className = "label";
         labelAmount.innerHTML = "Amount";
+        var divAmount = document.createElement("div");
         var inputAmount = document.createElement("input");
         inputAmount.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].Amount';
         inputAmount.name = 'Recipe.Ingredients[' + ingredientNum + '].Amount';
         inputAmount.id = 'ingredient-amount-' + ingredientNum;
-        div2.appendChild(labelAmount);
-        div2.appendChild(inputAmount);
+        inputAmount.className = "form-control";
+        divAmount.appendChild(inputAmount);
 
-        var div3 = document.createElement("div");
         var labelMeasuringUnit = document.createElement("label");
         labelMeasuringUnit.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].MeasuringUnit';
+        labelMeasuringUnit.className = "label";
         labelMeasuringUnit.innerHTML = "MeasuringUnit";
+        var divMeasuringUnit = document.createElement("div");
         var inputMeasuringUnit = document.createElement("input");
         inputMeasuringUnit.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].MeasuringUnit';
         inputMeasuringUnit.name = 'Recipe.Ingredients[' + ingredientNum + '].MeasuringUnit';
         inputMeasuringUnit.id = 'ingredient-measuringUnit-' + ingredientNum;
-        div3.appendChild(labelMeasuringUnit);
-        div3.appendChild(inputMeasuringUnit);
+        inputMeasuringUnit.className = "form-control";
+        divMeasuringUnit.appendChild(inputMeasuringUnit);
 
         var img1 = document.createElement("img");
         img1.src = "/images/delete-icon.png";
         img1.alt = "Delete!";
-        img1.style = "height: 30px; width: 25px";
+        img1.className = "icon color";
         img1.onclick = deleteIngredient;
 
+        div1.appendChild(labelName);
+        div1.appendChild(divName);
+        div1.appendChild(labelAmount);
+        div1.appendChild(divAmount);
+        div1.appendChild(labelMeasuringUnit);
+        div1.appendChild(divMeasuringUnit);
+        div1.appendChild(img1);
+
         ingredientDiv.appendChild(div1);
-        ingredientDiv.appendChild(div2);
-        ingredientDiv.appendChild(div3);
-        ingredientDiv.appendChild(img1);
 
         document.getElementById("Ingredients").appendChild(ingredientDiv);
     }
 
     function deleteIngredient() {
         if (ingredientNum > 0) {
-            var ingredientId = event.srcElement.parentElement.id;
+            var ingredientId = event.srcElement.parentElement.parentElement.id;
 
             var k;
             for (var k = parseInt(ingredientId); k < $("#Ingredients").children().length - 1; k++) {
@@ -135,52 +175,59 @@
         stepDiv.id = stepNum;
 
         var div1 = document.createElement("div");
+        div1.className = "flex-container-row";
+
         var labelOrder = document.createElement("label");
+        labelOrder.className = "label";
         var stepOrder = stepNum + 1;
         labelOrder.innerHTML = stepOrder + ".";
-        div1.appendChild(labelOrder);
 
-        var div2 = document.createElement("div");
         var labelDescription = document.createElement("label");
         labelDescription.htmlFor = 'Recipe.Steps[' + stepNum + '].Description';
         labelDescription.innerHTML = "StepDescription";
+        labelDescription.className = "label";
+
+        var divDescription = document.createElement("div");
         var inputDescription = document.createElement("input");
         inputDescription.htmlFor = 'Recipe.Steps[' + stepNum + '].Description';
         inputDescription.name = 'Recipe.Steps[' + stepNum + '].Description';
+        inputDescription.className = "form-control step-input";
         inputDescription.id = 'step-input-' + stepNum;
-        div2.appendChild(labelDescription);
-        div2.appendChild(inputDescription);
+        divDescription.appendChild(inputDescription);
 
         var img1 = document.createElement("img");
         img1.src = "/images/up-arrow.png";
         img1.alt = "Up!";
-        img1.style = "height: 30px; width: 25px";
+        img1.className = "icon color";
         img1.onclick = upButton;
 
         var img2 = document.createElement("img");
         img2.src = "/images/down-arrow.png";
         img2.alt = "Down!";
-        img2.style = "height: 30px; width: 25px";
+        img2.className = "icon color";
         img2.onclick = downButton;
 
         var img3 = document.createElement("img");
         img3.src = "/images/delete-icon.png";
         img3.alt = "Delete!";
-        img3.style = "height: 30px; width: 25px";
+        img3.className = "icon color";
         img3.onclick = deleteStep;
 
+        div1.appendChild(labelOrder);
+        div1.appendChild(labelDescription);
+        div1.appendChild(divDescription);
+        div1.appendChild(img1);
+        div1.appendChild(img2);
+        div1.appendChild(img3);
+
         stepDiv.appendChild(div1);
-        stepDiv.appendChild(div2);
-        stepDiv.appendChild(img1);
-        stepDiv.appendChild(img2);
-        stepDiv.appendChild(img3);
 
         document.getElementById("Steps").appendChild(stepDiv);
     }
 
     function deleteStep() {
         if (stepNum > 0) {
-            var stepId = event.srcElement.parentElement.id;
+            var stepId = event.srcElement.parentElement.parentElement.id;
 
             var k;
             for (k = parseInt(stepId); k < $("#Steps").children().length - 1; k++) {
@@ -194,10 +241,10 @@
         }
 
     function downButton() {
-        var stepId = event.srcElement.parentElement.id;
+        var stepId = event.srcElement.parentElement.parentElement.id;
 
         if ($("#Steps").children().last().attr('id') != $("#Steps").children().get(parseInt(stepId)).id) {
-            var nextStepId = event.srcElement.parentElement.nextElementSibling.id;
+            var nextStepId = event.srcElement.parentElement.parentElement.nextElementSibling.id;
             var str = $("#step-input-" + stepId).val();
             $("#step-input-" + stepId).val($("#step-input-" + nextStepId).val());
             $("#step-input-" + nextStepId).val(str);
@@ -205,10 +252,10 @@
     }
 
     function upButton() {
-        var stepId = event.srcElement.parentElement.id;
+        var stepId = event.srcElement.parentElement.parentElement.id;
 
         if ($("#Steps").children().first().attr('id') != $("#Steps").children().get(parseInt(stepId)).id) {
-            var previousStepId = event.srcElement.parentElement.previousElementSibling.id;
+            var previousStepId = event.srcElement.parentElement.parentElement.previousElementSibling.id;
             var str = $("#step-input-" + previousStepId).val();
             $("#step-input-" + previousStepId).val($("#step-input-" + stepId).val());
             $("#step-input-" + stepId).val(str);
