@@ -28,20 +28,23 @@ else
                 }
             </tbody>
         </table>
-
+        
         <table>
             <thead>
                 <tr>
-                    <th scope="col">Procedure</th>
+                    <th scope="col">Steps</th>
                 </tr>
             </thead>
             <tbody>
+                @foreach (var step in recipe.Steps)
+                {
                     <tr>
-                        <td>@recipe.Procedure</td>
+                        <td>@step.Order</td>
+                        <td>@step.Description</td>
                     </tr>
+                }
             </tbody>
         </table>
-
     </div>
     }
 }

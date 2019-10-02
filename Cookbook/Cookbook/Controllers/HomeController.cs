@@ -29,6 +29,11 @@ namespace Cookbook.Controllers
                 Recipes = _recipeRepository.GetAllRecipe().OrderBy(r => r.Name).ToList()
             };
 
+            foreach (var x in homeViewModel.Recipes)
+            {
+                x.Steps = x.Steps.OrderBy(y => y.Order).ToList();
+            }
+
             return View(homeViewModel);
         }
     }

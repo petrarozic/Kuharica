@@ -19,7 +19,10 @@ namespace Cookbook.Repositories
 
         public IEnumerable<Recipe> GetAllRecipe()
         {
-            return _appDbContext.Recipes.Include(r => r.RecipeIngredients).ThenInclude(r => r.Ingredient);
+            return _appDbContext.Recipes
+                                .Include(r => r.RecipeIngredients)
+                                    .ThenInclude(r => r.Ingredient)
+                                .Include(r => r.Steps);
         }
     }
 }

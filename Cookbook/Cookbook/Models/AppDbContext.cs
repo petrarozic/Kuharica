@@ -18,11 +18,16 @@ namespace Cookbook.Models
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<RecipeIngredient> RecipeIngredients { get; set; }
+        public DbSet<Step> Steps { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<RecipeIngredient>()
                 .HasKey(x => new { x.RecipeId, x.IngredientId });
+
+            builder.Entity<Recipe>()
+                .HasMany(r => r.Steps)
+                .WithOne(s => s.Recipe);
 
             base.OnModelCreating(builder);
         }
