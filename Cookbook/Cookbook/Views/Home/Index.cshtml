@@ -1,24 +1,28 @@
 ﻿@model HomeViewModel
-<h1>Recipes</h1>
-
-@if (Model.Recipes.Count == 0)
-{
-    <span>No recipes for display</span>
-}
-else
-{
-    foreach (var recipe in Model.Recipes)
-    {
-        <div>
-            <h4 onclick="showRecipe(@recipe.Id)">Name: @recipe.Name</h4>
+<div class="flex-container-column">
+    <div>
+        <div class="section">
+            <div class="title">Recipes</div>
+            <div id="Recipes">
+                @if (Model.Recipes.Count == 0)
+                {
+                    <span>No recipes for display</span>
+                }
+                else
+                {
+                    foreach (var recipe in Model.Recipes)
+                    {
+                        <div class="recipe" id=@recipe.Id onclick="showRecipe(@recipe.Id)">
+                            Name: @recipe.Name
+                        </div>
+                    }
+                }
+            </div>
         </div>
-    }
-}
-
+    </div>
+</div>
 <script>
-   function showRecipe(recipeId) {
-        console.log("Ucitaj recept sa ID= " + recipeId);
-
+    function showRecipe(recipeId) {
         window.location.href = "/Recipe/?recipeId=" + recipeId;
     }
 </script>
