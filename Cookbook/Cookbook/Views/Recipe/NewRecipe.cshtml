@@ -33,8 +33,7 @@
     <div id="Steps">
         <div id="0">
             <div>
-                <label asp-for="Recipe.Steps[0].Order">Order</label>
-                <input asp-for="Recipe.Steps[0].Order" id="step-order-0" />
+                <label>1.</label>
             </div>
             <div>
                 <label asp-for="Recipe.Steps[0].Description">StepDescription</label>
@@ -137,14 +136,9 @@
 
         var div1 = document.createElement("div");
         var labelOrder = document.createElement("label");
-        labelOrder.htmlFor = 'Recipe.Steps[' + stepNum + '].Order';
-        labelOrder.innerHTML = "Order";
-        var inputOrder = document.createElement("input");
-        inputOrder.htmlFor = 'Recipe.Steps[' + stepNum + '].Order';
-        inputOrder.name = 'Recipe.Steps[' + stepNum + '].Order';
-        inputOrder.id = 'step-order-' + stepNum;
+        var stepOrder = stepNum + 1;
+        labelOrder.innerHTML = stepOrder + ".";
         div1.appendChild(labelOrder);
-        div1.appendChild(inputOrder);
 
         var div2 = document.createElement("div");
         var labelDescription = document.createElement("label");
@@ -177,15 +171,12 @@
 
         stepDiv.appendChild(div1);
         stepDiv.appendChild(div2);
-
-        stepDiv.appendChild(div1);
-        stepDiv.appendChild(div2);
         stepDiv.appendChild(img1);
         stepDiv.appendChild(img2);
         stepDiv.appendChild(img3);
 
         document.getElementById("Steps").appendChild(stepDiv);
-        }
+    }
 
     function deleteStep() {
         if (stepNum > 0) {
@@ -195,7 +186,6 @@
             for (k = parseInt(stepId); k < $("#Steps").children().length - 1; k++) {
                 kNext = k + 1;
                 $("#step-input-" + k).val($("#step-input-" + kNext).val());
-                $("#step-order-" + k).val($("#step-order-" + kNext).val());
             }
 
             $("#Steps").children().last().remove();
@@ -205,36 +195,23 @@
 
     function downButton() {
         var stepId = event.srcElement.parentElement.id;
-        console.log("POMAKNI DOLE ID = " + stepId);
 
         if ($("#Steps").children().last().attr('id') != $("#Steps").children().get(parseInt(stepId)).id) {
             var nextStepId = event.srcElement.parentElement.nextElementSibling.id;
             var str = $("#step-input-" + stepId).val();
-            var order = $("#step-order-" + stepId).val();
             $("#step-input-" + stepId).val($("#step-input-" + nextStepId).val());
             $("#step-input-" + nextStepId).val(str);
-            $("#step-order-" + stepId).val($("#step-order-" + nextStepId).val());
-            $("#step-order-" + nextStepId).val(order);
-            console.log("pomaknuo sam ih dole");
         }
     }
 
     function upButton() {
         var stepId = event.srcElement.parentElement.id;
-        console.log("POMAKNI gore ID = " + stepId);
 
         if ($("#Steps").children().first().attr('id') != $("#Steps").children().get(parseInt(stepId)).id) {
             var previousStepId = event.srcElement.parentElement.previousElementSibling.id;
             var str = $("#step-input-" + previousStepId).val();
-            console.log("str = " + str);
-            var order = $("#step-order-" + previousStepId).val();
-            console.log("order = " + order);
             $("#step-input-" + previousStepId).val($("#step-input-" + stepId).val());
             $("#step-input-" + stepId).val(str);
-
-            $("#step-order-" + previousStepId).val($("#step-order-" + stepId).val());
-            $("#step-order-" + stepId).val(order);
-            console.log("pomaknuo sam ih gore");
         }
     }
 </script>

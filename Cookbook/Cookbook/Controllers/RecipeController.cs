@@ -89,11 +89,13 @@ namespace Cookbook.Controllers
             }
 
             recipe.Steps = new List<Step>();
-            foreach(var x in recipeViewModel.Recipe.Steps)
+            int orderNum = 0;
+            foreach (var x in recipeViewModel.Recipe.Steps)
             {
+                orderNum++;
                 Step step = new Step()
                 {
-                    Order = x.Order,
+                    Order = orderNum,
                     Description = x.Description
                 };
                 recipe.Steps.Add(step);
