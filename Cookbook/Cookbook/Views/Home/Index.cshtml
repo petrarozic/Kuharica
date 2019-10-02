@@ -10,53 +10,13 @@ else
     foreach (var recipe in Model.Recipes)
     {
         <div>
-            <h4>Name: @recipe.Name</h4>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th scope="col">Ingridients</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var recipeIngredient in recipe.RecipeIngredients)
-                    {
-                        <tr>
-                            <td>@recipeIngredient.Amount @recipeIngredient.MeasuringUnit</td>
-                            <td>@recipeIngredient.Ingredient.Name</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th scope="col">Steps</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var step in recipe.Steps)
-                    {
-                        <tr>
-                            <td>@step.Order</td>
-                            <td>@step.Description</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+            <h4 onclick="showRecipe(@recipe.RecipeId)">Name: @recipe.Name</h4>
         </div>
     }
 }
 
 <script>
-    $(document).ready(function () {
-        $(".recipe").on('click', function (e) {
-            showRecipe(e.target.id);
-        });
-    });
-
-    function showRecipe(recipeId) {
+   function showRecipe(recipeId) {
         console.log("Ucitaj recept sa ID= " + recipeId);
         window.location.href = "/Recipe/" + recipeId;
     }

@@ -24,5 +24,15 @@ namespace Cookbook.Repositories
                                     .ThenInclude(r => r.Ingredient)
                                 .Include(r => r.Steps);
         }
+
+        public Recipe GetRecipeById(int recipeId)
+        {
+            return _appDbContext.Recipes
+                                .Where(r => r.RecipeId == recipeId)
+                                .Include(r => r.RecipeIngredients)
+                                    .ThenInclude(r => r.Ingredient)
+                                .Include(r => r.Steps)
+                                .First();
+        }
     }
 }

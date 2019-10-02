@@ -1,0 +1,37 @@
+﻿@model RecipeViewModel
+
+<h1>Recipe: @Model.Recipe.Name</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th scope="col">Ingridients</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var recipeIngredient in Model.Recipe.RecipeIngredients)
+        {
+            <tr>
+                <td>@recipeIngredient.Amount @recipeIngredient.MeasuringUnit</td>
+                <td>@recipeIngredient.Ingredient.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<table>
+    <thead>
+        <tr>
+            <th scope="col">Steps</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var step in Model.Recipe.Steps)
+        {
+            <tr>
+                <td>@step.Order</td>
+                <td>@step.Description</td>
+            </tr>
+        }
+    </tbody>
+</table>
