@@ -93,18 +93,20 @@
     }
 
     function deleteIngredient() {
-        var ingredientId = event.srcElement.parentElement.id;
-        console.log("UKLANJAM ING ID = " + ingredientId);
+        if (ingredientNum > 0) {
+            var ingredientId = event.srcElement.parentElement.id;
+            console.log("UKLANJAM ING ID = " + ingredientId);
 
-        var k;
-        for (var k = parseInt(ingredientId); k < $("#Ingredients").children().length - 1; k++) {
-            kNext = k + 1;
-            $("#ingredient-name-" + k).val($("#ingredient-name-" + kNext).val());
-            $("#ingredient-amount-" + k).val($("#ingredient-amount-" + kNext).val());
-            $("#ingredient-measuringUnit-" + k).val($("#ingredient-measuringUnit-" + kNext).val());
+            var k;
+            for (var k = parseInt(ingredientId); k < $("#Ingredients").children().length - 1; k++) {
+                kNext = k + 1;
+                $("#ingredient-name-" + k).val($("#ingredient-name-" + kNext).val());
+                $("#ingredient-amount-" + k).val($("#ingredient-amount-" + kNext).val());
+                $("#ingredient-measuringUnit-" + k).val($("#ingredient-measuringUnit-" + kNext).val());
+            }
+
+            $("#Ingredients").children().last().remove();
+            ingredientNum -= 1;
         }
-
-        $("#Ingredients").children().last().remove();
-        ingredientNum -= 1;
     }
 </script>
