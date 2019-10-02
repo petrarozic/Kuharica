@@ -69,5 +69,15 @@ namespace Cookbook.Controllers
             RecipeViewModel recipeViewModel = new RecipeViewModel();
             return View(recipeViewModel);
         }
+
+        [HttpPost]
+        public IActionResult AddNewRecipe(RecipeViewModel recipeViewModel)
+        {
+            Recipe recipe = new Recipe();
+            recipe.Name = recipeViewModel.Recipe.Name;
+
+            _recipeRepository.AddRecipe(recipe);
+            return RedirectToAction("Index", "Recipe", new { recipeId = recipe.RecipeId});
+        }
     }
 }

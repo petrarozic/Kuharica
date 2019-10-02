@@ -35,6 +35,7 @@
                 <a href="~/" class="navbar-brand">Cookbook</a>
             </div>
             <div class="navbar-collapse collapse">
+                <a asp-controller="Recipe" asp-action="NewRecipe" class="navbar-brand">Add new recipe</a>
                 @{
                     var result = Engine.FindView(ViewContext, "_LoginPartial", isMainPage: false);
                 }

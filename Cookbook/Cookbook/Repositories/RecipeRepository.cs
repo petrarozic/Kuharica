@@ -17,6 +17,12 @@ namespace Cookbook.Repositories
             _appDbContext = appDbContext;
         }
 
+        public void AddRecipe(Recipe recipe)
+        {
+            _appDbContext.Recipes.Add(recipe);
+            _appDbContext.SaveChanges();
+        }
+
         public IEnumerable<Recipe> GetAllRecipe()
         {
             return _appDbContext.Recipes

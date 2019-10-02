@@ -1,0 +1,13 @@
+﻿@model RecipeViewModel
+
+<div>New recipe</div>
+
+<form asp-action="AddNewRecipe" method="post" class="" role="form">
+
+    <div>
+        <label asp-for="Recipe.Name">Recipe name</label>
+        <input asp-for="Recipe.Name" />
+    </div>
+
+    <input type="submit" class="btn btn-primary" value="Add recipe" />
+</form>
