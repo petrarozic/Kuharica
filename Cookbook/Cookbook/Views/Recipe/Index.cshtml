@@ -9,11 +9,11 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var recipeIngredient in Model.Recipe.RecipeIngredients)
+        @foreach (var ingredient in Model.Recipe.Ingredients)
         {
             <tr>
-                <td>@recipeIngredient.Amount @recipeIngredient.MeasuringUnit</td>
-                <td>@recipeIngredient.Ingredient.Name</td>
+                <td>@ingredient.Amount @ingredient.MeasuringUnit</td>
+                <td>@ingredient.Name</td>
             </tr>
         }
     </tbody>

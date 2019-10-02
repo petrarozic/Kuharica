@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cookbook.DTO;
 using Cookbook.Interfaces;
 using Cookbook.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -26,13 +27,15 @@ namespace Cookbook.Controllers
         {
             HomeViewModel homeViewModel = new HomeViewModel()
             {
-                Recipes = _recipeRepository.GetAllRecipe().OrderBy(r => r.Name).ToList()
+                Recipes = _recipeRepository.GetAllRecipe()
+                                            .OrderBy(r => r.Name)
+                                            .Select(u => new RecipeDTO
+                                                {
+                                                    Id = u.RecipeId,
+                                                    Name = u.Name
+                                                })
+                                            .ToList()
             };
-
-            foreach (var x in homeViewModel.Recipes)
-            {
-                x.Steps = x.Steps.OrderBy(y => y.Order).ToList();
-            }
 
             return View(homeViewModel);
         }
