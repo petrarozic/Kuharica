@@ -12,7 +12,7 @@
                 {
                     foreach (var recipe in Model.Recipes)
                     {
-                        <div class="recipe" id=@recipe.Id onclick="showRecipe(@recipe.Id)">
+                        <div class="recipe" id=@recipe.Id>
                             Name: @recipe.Name
                         </div>
                     }
@@ -22,6 +22,12 @@
     </div>
 </div>
 <script>
+    $(document).ready(function () {
+        $(".recipe").on('click', function (e) {
+            showRecipe(e.target.id);
+        });
+    });
+
     function showRecipe(recipeId) {
         window.location.href = "/Recipe/?recipeId=" + recipeId;
     }
