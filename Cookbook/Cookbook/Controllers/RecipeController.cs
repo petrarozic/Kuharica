@@ -108,5 +108,11 @@ namespace Cookbook.Controllers
             _recipeRepository.AddRecipe(recipe);
             return RedirectToAction("Index", "Recipe", new { recipeId = recipe.RecipeId});
         }
+
+        [Route("Recipe/EditRecipe/{recipeId}")]
+        public IActionResult EditRecipe(int recipeId)
+        {
+            return View();
+        }
     }
 }

@@ -42,5 +42,19 @@
             </table>
         </div>
 
+        <div class="buttons">
+            <button id="editButton" type="button" class="btn color">Edit</button>
+        </div>
+
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $("#editButton").click(editRecipe);
+    });
+
+    function editRecipe() {
+        window.location.href = "/Recipe/EditRecipe/" + $("#recipeId").val();
+    }
+</script>
