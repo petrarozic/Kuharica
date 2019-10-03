@@ -28,7 +28,8 @@ namespace Cookbook.Repositories
             return _appDbContext.Recipes
                                 .Include(r => r.RecipeIngredients)
                                     .ThenInclude(r => r.Ingredient)
-                                .Include(r => r.Steps);
+                                .Include(r => r.Steps)
+                                .Include(r => r.ApplicationUser);
         }
 
         public Recipe GetRecipeById(int recipeId)
@@ -38,6 +39,7 @@ namespace Cookbook.Repositories
                                 .Include(r => r.RecipeIngredients)
                                     .ThenInclude(r => r.Ingredient)
                                 .Include(r => r.Steps)
+                                .Include(r => r.ApplicationUser)
                                 .First();
         }
     }

@@ -62,7 +62,7 @@ namespace Cookbook.Controllers
             }
             recipeViewModel.Recipe.Steps = stepDTOs.OrderBy(y => y.Order).ToList();
 
-            recipeViewModel.Recipe.Steps = recipeViewModel.Recipe.Steps.OrderBy(y => y.Order).ToList();
+            recipeViewModel.Recipe.UserEmail = recipe.ApplicationUser.Email;
 
             return View(recipeViewModel);
         }
