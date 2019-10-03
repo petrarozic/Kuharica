@@ -210,5 +210,12 @@ namespace Cookbook.Controllers
 
             return RedirectToAction("Index", "Recipe", new { recipeId = updatedRecipe.RecipeId});
         }
+
+        [Route("Recipe/DeleteRecipe/{recipeId}")]
+        public IActionResult DeleteRecipe(int recipeId)
+        {
+            _recipeRepository.DeleteRecipe(recipeId);
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

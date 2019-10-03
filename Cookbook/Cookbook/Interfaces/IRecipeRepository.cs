@@ -12,5 +12,6 @@ namespace Cookbook.Interfaces
         Recipe GetRecipeById(int recipeId);
         void AddRecipe(Recipe recipe);
         void EditRecipe(Recipe updatedRecipe);
+        void DeleteRecipe(int recipeId);
     }
 }

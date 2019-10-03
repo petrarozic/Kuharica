@@ -23,6 +23,13 @@ namespace Cookbook.Repositories
             _appDbContext.SaveChanges();
         }
 
+        public void DeleteRecipe(int recipeId)
+        {
+            Recipe recipe = GetRecipeById(recipeId);
+            _appDbContext.Remove(recipe);
+            _appDbContext.SaveChanges();
+        }
+
         public void EditRecipe(Recipe recipe)
         {
             var currentRecipe = GetRecipeById(recipe.RecipeId);

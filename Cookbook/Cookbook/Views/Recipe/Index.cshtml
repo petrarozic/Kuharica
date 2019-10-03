@@ -48,6 +48,7 @@
         {
             <div class="buttons">
                 <button id="editButton" type="button" class="btn color">Edit</button>
+                <button id="deleteButton" type="button" class="btn color">Delete</button>
             </div>
         }
 
@@ -57,9 +58,14 @@
 <script>
     $(document).ready(function () {
         $("#editButton").click(editRecipe);
+        $("#deleteButton").click(deleteRecipe);
     });
 
     function editRecipe() {
         window.location.href = "/Recipe/EditRecipe/" + $("#recipeId").val();
+    }
+
+    function deleteRecipe() {
+        window.location.href = "/Recipe/DeleteRecipe/" + $("#recipeId").val();
     }
 </script>
