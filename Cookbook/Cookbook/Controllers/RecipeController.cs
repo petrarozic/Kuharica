@@ -172,5 +172,43 @@ namespace Cookbook.Controllers
 
             return Json(recipeViewModel);
         }
+
+        [HttpPost]
+        [Route("Recipe/EditRecipe/{recipeId}")]
+        public IActionResult EditRecipe(RecipeViewModel recipeViewModel)
+        {
+            Recipe updatedRecipe = new Recipe();
+            updatedRecipe.RecipeId = recipeViewModel.Recipe.RecipeId;
+            updatedRecipe.Name = recipeViewModel.Recipe.Name;
+
+            updatedRecipe.RecipeIngredients = new List<RecipeIngredient>();
+            foreach (var x in recipeViewModel.Recipe.Ingredients)
+            {
+                RecipeIngredient recipeIngredient = new RecipeIngredient
+                {
+                    Ingredient = new Ingredient { Name = x.Name },
+                    Amount = x.Amount,
+                    MeasuringUnit = x.MeasuringUnit
+                };
+                updatedRecipe.RecipeIngredients.Add(recipeIngredient);
+            }
+
+            updatedRecipe.Steps = new List<Step>();
+            int orderNum = 0;
+            foreach (var s in recipeViewModel.Recipe.Steps)
+            {
+                orderNum++;
+                Step step = new Step()
+                {
+                    Order = orderNum,
+                    Description = s.Description
+                };
+                updatedRecipe.Steps.Add(step);
+            }
+
+            _recipeRepository.EditRecipe(updatedRecipe);
+
+            return RedirectToAction("Index", "Recipe", new { recipeId = updatedRecipe.RecipeId});
+        }
     }
 }

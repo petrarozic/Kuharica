@@ -23,6 +23,15 @@ namespace Cookbook.Repositories
             _appDbContext.SaveChanges();
         }
 
+        public void EditRecipe(Recipe recipe)
+        {
+            var currentRecipe = GetRecipeById(recipe.RecipeId);
+            currentRecipe.Name = recipe.Name;
+            currentRecipe.Steps = recipe.Steps;
+            currentRecipe.RecipeIngredients = recipe.RecipeIngredients;
+            _appDbContext.SaveChanges();
+        }
+
         public IEnumerable<Recipe> GetAllRecipe()
         {
             return _appDbContext.Recipes
