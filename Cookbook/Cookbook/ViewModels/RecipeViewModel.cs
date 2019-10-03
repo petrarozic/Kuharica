@@ -10,5 +10,6 @@ namespace Cookbook.ViewModels
     public class RecipeViewModel
     {
         public RecipeDetailDTO Recipe { get; set; }
+        public bool UsersMatch { get; set; }
     }
 }

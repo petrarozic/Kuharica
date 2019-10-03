@@ -24,7 +24,7 @@ namespace Cookbook.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index(int recipeId)
+        public async Task<IActionResult> Index(int recipeId)
         {
             Recipe recipe = _recipeRepository.GetRecipeById(recipeId);
 
@@ -63,6 +63,15 @@ namespace Cookbook.Controllers
             recipeViewModel.Recipe.Steps = stepDTOs.OrderBy(y => y.Order).ToList();
 
             recipeViewModel.Recipe.UserEmail = recipe.ApplicationUser.Email;
+
+            var applicationUser = await _userManager.GetUserAsync(HttpContext.User);
+            if(recipe.ApplicationUser.Id == applicationUser.Id)
+            {
+                recipeViewModel.UsersMatch = true;
+            } else
+            {
+                recipeViewModel.UsersMatch = false;
+            }
 
             return View(recipeViewModel);
         }

@@ -42,9 +42,12 @@
             </table>
         </div>
 
-        <div class="buttons">
-            <button id="editButton" type="button" class="btn color">Edit</button>
-        </div>
+        @if (Model.UsersMatch == true)
+        {
+            <div class="buttons">
+                <button id="editButton" type="button" class="btn color">Edit</button>
+            </div>
+        }
 
     </div>
 </div>
