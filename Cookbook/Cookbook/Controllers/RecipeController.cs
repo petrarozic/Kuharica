@@ -126,6 +126,7 @@ namespace Cookbook.Controllers
 
             if (recipe.ApplicationUser.Id != applicationUser.Id)
             {
+                ViewBag.Error = "You do not have permission to edit this recipe";
                 return View("Warning");
             }
 
@@ -188,6 +189,7 @@ namespace Cookbook.Controllers
 
             if (userWhoCreatedRecipe.Id != applicationUser.Id)
             {
+                ViewBag.Error = "You do not have permission to edit this recipe";
                 return View("Warning");
             }
 
@@ -232,6 +234,7 @@ namespace Cookbook.Controllers
             Recipe recipe = _recipeRepository.GetRecipeById(recipeId);
             if (recipe.ApplicationUser.Id != applicationUser.Id)
             {
+                ViewBag.Error = "You do not have permission to delete this recipe";
                 return View("Warning");
             }
 
