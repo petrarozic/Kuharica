@@ -3,6 +3,7 @@ using Cookbook.Interfaces;
 using Cookbook.Models;
 using Cookbook.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,10 +16,12 @@ namespace Cookbook.Controllers
     public class RecipeController: Controller
     {
         private readonly IRecipeRepository _recipeRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public RecipeController(IRecipeRepository recipeRepository)
+        public RecipeController(IRecipeRepository recipeRepository, UserManager<ApplicationUser> userManager)
         {
             _recipeRepository = recipeRepository;
+            _userManager = userManager;
         }
 
         public IActionResult Index(int recipeId)
@@ -71,10 +74,11 @@ namespace Cookbook.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddNewRecipe(RecipeViewModel recipeViewModel)
+        public async Task<IActionResult> AddNewRecipe(RecipeViewModel recipeViewModel)
         {
             Recipe recipe = new Recipe();
             recipe.Name = recipeViewModel.Recipe.Name;
+            recipe.ApplicationUser = await _userManager.GetUserAsync(HttpContext.User);
 
             recipe.RecipeIngredients = new List<RecipeIngredient>();
             foreach (var x in recipeViewModel.Recipe.Ingredients)
