@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ namespace Cookbook.Models
 {
     public static class DbInitializer
     {
-        public static void Seed(AppDbContext context)
+        public static async Task Seed(AppDbContext context, UserManager<ApplicationUser> _userManager)
         {
             if (!context.Recipes.Any())
             {
@@ -240,7 +241,47 @@ namespace Cookbook.Models
                     };
 
                 context.SaveChanges();
+
+                ApplicationUser applicationUser1 = new ApplicationUser()
+                {
+                    UserName = "user1@user.user",
+                    Email = "user1@user.user"
+                };
+                await _userManager.CreateAsync(applicationUser1, "User123!");
+
+                ApplicationUser applicationUser2 = new ApplicationUser()
+                {
+                    UserName = "user2@user.user",
+                    Email = "user2@user.user"
+                };
+                await _userManager.CreateAsync(applicationUser2, "User123!");
+
+                recept0.ApplicationUser = RandomUser(applicationUser1, applicationUser2);
+                recept1.ApplicationUser = RandomUser(applicationUser1, applicationUser2);
+                recept2.ApplicationUser = RandomUser(applicationUser1, applicationUser2);
+                recept3.ApplicationUser = RandomUser(applicationUser1, applicationUser2);
+                recept4.ApplicationUser = RandomUser(applicationUser1, applicationUser2);
+                recept5.ApplicationUser = RandomUser(applicationUser1, applicationUser2);
+                recept6.ApplicationUser = RandomUser(applicationUser1, applicationUser2);
+                recept7.ApplicationUser = RandomUser(applicationUser1, applicationUser2);
+                recept8.ApplicationUser = RandomUser(applicationUser1, applicationUser2);
+                recept9.ApplicationUser = RandomUser(applicationUser1, applicationUser2);
+
+                context.SaveChanges();
             }
+        }
+
+        private static ApplicationUser RandomUser(ApplicationUser applicationUser1, ApplicationUser applicationUser2)
+        {
+            Random random = new Random();
+            switch (random.Next(1, 3))
+            {
+                case 1:
+                    return applicationUser1;
+                case 2:
+                    return applicationUser2;
+            }
+            return null;
         }
     }
 }
