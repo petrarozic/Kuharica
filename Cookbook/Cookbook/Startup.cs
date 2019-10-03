@@ -31,7 +31,7 @@ namespace Cookbook
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<AppDbContext>();
+            services.AddDefaultIdentity<ApplicationUser>().AddEntityFrameworkStores<AppDbContext>();
 
             services.AddTransient<IRecipeRepository, RecipeRepository>();
 

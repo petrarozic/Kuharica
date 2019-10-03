@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Cookbook.Models
 {
-    public class AppDbContext: IdentityDbContext<IdentityUser>
+    public class AppDbContext: IdentityDbContext<ApplicationUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -28,6 +28,10 @@ namespace Cookbook.Models
             builder.Entity<Recipe>()
                 .HasMany(r => r.Steps)
                 .WithOne(s => s.Recipe);
+
+            builder.Entity<Recipe>()
+               .HasOne(r => r.ApplicationUser)
+               .WithMany(s => s.Recipes);
 
             base.OnModelCreating(builder);
         }
