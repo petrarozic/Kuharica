@@ -121,7 +121,56 @@ namespace Cookbook.Controllers
         [Route("Recipe/EditRecipe/{recipeId}")]
         public IActionResult EditRecipe(int recipeId)
         {
-            return View();
+            Recipe recipe = _recipeRepository.GetRecipeById(recipeId);
+
+            RecipeViewModel recipeViewModel = new RecipeViewModel();
+            recipeViewModel.Recipe = new RecipeDetailDTO()
+            {
+                RecipeId = recipe.RecipeId
+            };
+
+            return View(recipeViewModel);
+        }
+
+        [HttpGet]
+        public JsonResult GetRecipeData(int recipeId)
+        {
+            Recipe recipe = _recipeRepository.GetRecipeById(recipeId);
+
+            RecipeViewModel recipeViewModel = new RecipeViewModel()
+            {
+                Recipe = new RecipeDetailDTO()
+                {
+                    RecipeId = recipe.RecipeId,
+                    Name = recipe.Name,
+                    Ingredients = new List<IngredientDTO>(),
+                    Steps = new List<StepDTO>()
+                }
+            };
+
+            foreach (var x in recipe.RecipeIngredients)
+            {
+                IngredientDTO searchIngredient = new IngredientDTO()
+                {
+                    Name = x.Ingredient.Name,
+                    Amount = x.Amount,
+                    MeasuringUnit = x.MeasuringUnit
+                };
+                recipeViewModel.Recipe.Ingredients.Add(searchIngredient);
+            }
+
+            foreach (var x in recipe.Steps)
+            {
+                StepDTO searchStep = new StepDTO()
+                {
+                    Order = x.Order,
+                    Description = x.Description
+                };
+                recipeViewModel.Recipe.Steps.Add(searchStep);
+            }
+            recipeViewModel.Recipe.Steps = recipeViewModel.Recipe.Steps.OrderBy(y => y.Order).ToList();
+
+            return Json(recipeViewModel);
         }
     }
 }

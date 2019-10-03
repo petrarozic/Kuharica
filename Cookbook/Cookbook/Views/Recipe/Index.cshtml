@@ -4,6 +4,8 @@
     <div>
         <h1 class="element">Recipe: @Model.Recipe.Name</h1>
         <span class="element">Created by: @Model.Recipe.UserEmail</span>
+        <input hidden id="recipeId" value="@Model.Recipe.RecipeId" />
+
         <div class="flex-container-row section">
             <table class="element">
                 <thead>

@@ -1,1 +1,33 @@
-﻿EDIT RECIPE
+﻿@model RecipeViewModel
+<div class="flex-container-column">
+    <div class="title">Edit recipe</div>
+
+    <form asp-action="EditRecipe" method="post" role="form">
+        <input id="recipeId" asp-for="Recipe.RecipeId" value="@Model.Recipe.RecipeId" hidden />
+    </form>
+</div>
+
+<script>
+    $(document).ready(function () {
+        uploadRecipeData();
+    });
+
+     function uploadRecipeData() {
+        $.ajax({
+            type: "GET",
+            url: "/Recipe/GetRecipeData",
+            dataType: "json",
+            data: { recipeId: $("#recipeId").val() },
+
+            success: function (data) {
+                console.log("success - getRecipeData");
+            },
+            failure: function (data) {
+                console.log("failure - getRecipeData");
+            },
+            error: function (data) {
+                console.log("error - getRecipeData");
+            }
+        });
+    }
+</script>
