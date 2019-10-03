@@ -119,9 +119,15 @@ namespace Cookbook.Controllers
         }
 
         [Route("Recipe/EditRecipe/{recipeId}")]
-        public IActionResult EditRecipe(int recipeId)
+        public async Task<IActionResult> EditRecipe(int recipeId)
         {
             Recipe recipe = _recipeRepository.GetRecipeById(recipeId);
+            var applicationUser = await _userManager.GetUserAsync(HttpContext.User);
+
+            if (recipe.ApplicationUser.Id != applicationUser.Id)
+            {
+                return View("Warning");
+            }
 
             RecipeViewModel recipeViewModel = new RecipeViewModel();
             recipeViewModel.Recipe = new RecipeDetailDTO()
@@ -175,8 +181,16 @@ namespace Cookbook.Controllers
 
         [HttpPost]
         [Route("Recipe/EditRecipe/{recipeId}")]
-        public IActionResult EditRecipe(RecipeViewModel recipeViewModel)
+        public async Task<IActionResult> EditRecipe(RecipeViewModel recipeViewModel)
         {
+            var userWhoCreatedRecipe = _recipeRepository.GetRecipeById(recipeViewModel.Recipe.RecipeId).ApplicationUser;
+            var applicationUser = await _userManager.GetUserAsync(HttpContext.User);
+
+            if (userWhoCreatedRecipe.Id != applicationUser.Id)
+            {
+                return View("Warning");
+            }
+
             Recipe updatedRecipe = new Recipe();
             updatedRecipe.RecipeId = recipeViewModel.Recipe.RecipeId;
             updatedRecipe.Name = recipeViewModel.Recipe.Name;
@@ -212,8 +226,15 @@ namespace Cookbook.Controllers
         }
 
         [Route("Recipe/DeleteRecipe/{recipeId}")]
-        public IActionResult DeleteRecipe(int recipeId)
+        public async Task<IActionResult> DeleteRecipe(int recipeId)
         {
+            var applicationUser = await _userManager.GetUserAsync(HttpContext.User);
+            Recipe recipe = _recipeRepository.GetRecipeById(recipeId);
+            if (recipe.ApplicationUser.Id != applicationUser.Id)
+            {
+                return View("Warning");
+            }
+
             _recipeRepository.DeleteRecipe(recipeId);
             return RedirectToAction("Index", "Home");
         }
