@@ -4,15 +4,52 @@
 
     <form asp-action="EditRecipe" method="post" role="form">
         <input id="recipeId" asp-for="Recipe.RecipeId" value="@Model.Recipe.RecipeId" hidden />
+
+        <div class="section">
+            <div class="flex-container-row">
+                <div>
+                    <label asp-for="Recipe.Name" class="label">Recipe name</label>
+                </div>
+                <div>
+                    <input asp-for="Recipe.Name" class="form-control"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="name">Ingredients:</div>
+            <div class="flex-container-column">
+                <div id="Ingredients">
+                </div>
+                <img src="~/images/plus-icon.png" class="icon color" alt="New ingredient" id="addInputsForIngredient">
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="name">Steps:</div>
+            <div class="flex-container-column section">
+                <div id="Steps">
+                </div>
+                <img src="~/images/plus-icon.png" class="icon color" alt="New step" id="addInputsForStep">
+            </div>
+        </div>
+
+        <div class="buttons">
+            <input type="submit" class="btn btn-primary" value="Edit recipe" />
+        </div>
+
     </form>
 </div>
 
 <script>
     $(document).ready(function () {
         uploadRecipeData();
+
+        $("#addInputsForIngredient").click(addInputsForIngredient);
+        $("#addInputsForStep").click(addInputsForStep);
     });
 
-     function uploadRecipeData() {
+    function uploadRecipeData() {
         $.ajax({
             type: "GET",
             url: "/Recipe/GetRecipeData",
@@ -21,6 +58,7 @@
 
             success: function (data) {
                 console.log("success - getRecipeData");
+                setRecipeData(data);
             },
             failure: function (data) {
                 console.log("failure - getRecipeData");
@@ -29,5 +67,301 @@
                 console.log("error - getRecipeData");
             }
         });
+    }
+
+    var ingredientNum = 0;
+    var stepNum = 0;
+
+    function setRecipeData(data) {
+
+        $('input[name="Recipe.Name"]').val(data['recipe']['name']);
+        $('input[name="Recipe.Public"]').prop("checked", data['recipe']['public'])
+
+        var i = 0;
+        for (i = 0; i < data["recipe"]["ingredients"].length; i++) {
+            var ingredientDiv = document.createElement("div");
+            ingredientDiv.id = ingredientNum;
+
+            var div1 = document.createElement("div");
+            div1.className = "flex-container-row";
+
+            var labelName = document.createElement("label");
+            labelName.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].Name';
+            labelName.className = "label";
+            labelName.innerHTML = "Name";
+            var divName = document.createElement("div");
+            var inputName = document.createElement("input");
+            inputName.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].Name';
+            inputName.name = 'Recipe.Ingredients[' + ingredientNum + '].Name';
+            inputName.id = 'ingredient-name-' + ingredientNum;
+            inputName.className = "form-control";
+            inputName.value = data["recipe"]["ingredients"][i]["name"];
+            divName.appendChild(inputName);
+
+            var labelAmount = document.createElement("label");
+            labelAmount.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].Amount';
+            labelAmount.className = "label";
+            labelAmount.innerHTML = "Amount";
+            var divAmount = document.createElement("div");
+            var inputAmount = document.createElement("input");
+            inputAmount.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].Amount';
+            inputAmount.name = 'Recipe.Ingredients[' + ingredientNum + '].Amount';
+            inputAmount.id = 'ingredient-amount-' + ingredientNum;
+            inputAmount.className = "form-control";
+            inputAmount.value = data["recipe"]["ingredients"][i]["amount"];
+            divAmount.appendChild(inputAmount);
+
+            var labelMeasuringUnit = document.createElement("label");
+            labelMeasuringUnit.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].MeasuringUnit';
+            labelMeasuringUnit.className = "label";
+            labelMeasuringUnit.innerHTML = "MeasuringUnit";
+            var divMeasuringUnit = document.createElement("div");
+            var inputMeasuringUnit = document.createElement("input");
+            inputMeasuringUnit.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].MeasuringUnit';
+            inputMeasuringUnit.name = 'Recipe.Ingredients[' + ingredientNum + '].MeasuringUnit';
+            inputMeasuringUnit.id = 'ingredient-measuringUnit-' + ingredientNum;
+            inputMeasuringUnit.className = "form-control";
+            inputMeasuringUnit.value = data["recipe"]["ingredients"][i]["measuringUnit"];
+            divMeasuringUnit.appendChild(inputMeasuringUnit);
+
+            var img1 = document.createElement("img");
+            img1.src = "/images/delete-icon.png";
+            img1.alt = "Delete!";
+            img1.className = "icon color";
+            img1.onclick = deleteIngredient;
+
+            div1.appendChild(labelName);
+            div1.appendChild(divName);
+            div1.appendChild(labelAmount);
+            div1.appendChild(divAmount);
+            div1.appendChild(labelMeasuringUnit);
+            div1.appendChild(divMeasuringUnit);
+            div1.appendChild(img1);
+
+            ingredientDiv.appendChild(div1);
+
+            $("#Ingredients").append(ingredientDiv);
+            ingredientNum += 1;
+        }
+        var j = 0;
+        for (j = 0; j < data["recipe"]["steps"].length; j++) {
+            var stepDiv = document.createElement("div");
+            stepDiv.id = stepNum;
+
+            var div1 = document.createElement("div");
+            div1.className = "flex-container-row";
+
+            var labelOrder = document.createElement("label");
+            labelOrder.htmlFor = 'Recipe.Steps[' + stepNum + '].Order';
+            labelOrder.className = "label";
+            var stepOrder = stepNum + 1;
+            labelOrder.innerHTML = stepOrder + ".";
+
+            var divDescription = document.createElement("div");
+            var inputDescription = document.createElement("input");
+            inputDescription.htmlFor = 'Recipe.Steps[' + stepNum + '].Description';
+            inputDescription.name = 'Recipe.Steps[' + stepNum + '].Description';
+            inputDescription.className = "form-control step-input";
+            inputDescription.id = 'step-input-' + stepNum;
+            inputDescription.value = data["recipe"]["steps"][j]["description"];
+            divDescription.appendChild(inputDescription);
+
+            var img1 = document.createElement("img");
+            img1.src = "/images/up-arrow.png";
+            img1.alt = "Up!";
+            img1.className = "icon color";
+            img1.onclick = upButton;
+
+            var img2 = document.createElement("img");
+            img2.src = "/images/down-arrow.png";
+            img2.alt = "Down!";
+            img2.className = "icon color";
+            img2.onclick = downButton;
+
+            var img3 = document.createElement("img");
+            img3.src = "/images/delete-icon.png";
+            img3.alt = "Delete!";
+            img3.className = "icon color";
+            img3.onclick = deleteStep;
+
+            div1.appendChild(labelOrder);
+            div1.appendChild(divDescription);
+            div1.appendChild(img1);
+            div1.appendChild(img2);
+            div1.appendChild(img3);
+           
+            stepDiv.appendChild(div1);
+            document.getElementById("Steps").appendChild(stepDiv);
+            stepNum += 1;
+        }
+    }
+
+    function deleteIngredient() {
+        if (ingredientNum > 0) {
+            var ingredientId = event.srcElement.parentElement.parentElement.id;
+
+            var k;
+            for (var k = parseInt(ingredientId); k < $("#Ingredients").children().length - 1; k++) {
+                kNext = k + 1;
+                $("#ingredient-name-" + k).val($("#ingredient-name-" + kNext).val());
+                $("#ingredient-amount-" + k).val($("#ingredient-amount-" + kNext).val());
+                $("#ingredient-measuringUnit-" + k).val($("#ingredient-measuringUnit-" + kNext).val());
+            }
+
+            $("#Ingredients").children().last().remove();
+            ingredientNum -= 1;
+        }
+    }
+
+    function upButton() {
+        var stepId = event.srcElement.parentElement.parentElement.id;
+
+        if ($("#Steps").children().first().attr('id') != $("#Steps").children().get(parseInt(stepId)).id) {
+            var previousStepId = event.srcElement.parentElement.parentElement.previousElementSibling.id;
+            var str = $("#step-input-" + previousStepId).val();
+            $("#step-input-" + previousStepId).val($("#step-input-" + stepId).val());
+            $("#step-input-" + stepId).val(str);
+        }
+    }
+
+    function downButton() {
+        var stepId = event.srcElement.parentElement.parentElement.id;
+
+        if ($("#Steps").children().last().attr('id') != $("#Steps").children().get(parseInt(stepId)).id) {
+            var nextStepId = event.srcElement.parentElement.parentElement.nextElementSibling.id;
+            var str = $("#step-input-" + stepId).val();
+            $("#step-input-" + stepId).val($("#step-input-" + nextStepId).val());
+            $("#step-input-" + nextStepId).val(str);
+        }
+    }
+
+    function deleteStep() {
+        if (stepNum > 0) {
+            var stepId = event.srcElement.parentElement.parentElement.id;
+
+            var k;
+            for (k = parseInt(stepId); k < $("#Steps").children().length - 1; k++) {
+                kNext = k + 1;
+                $("#step-input-" + k).val($("#step-input-" + kNext).val());
+            }
+
+            $("#Steps").children().last().remove();
+            stepNum -= 1;
+        }
+    }
+
+    function addInputsForIngredient() {
+        var ingredientDiv = document.createElement("div");
+        ingredientDiv.id = ingredientNum;
+
+        var div1 = document.createElement("div");
+        div1.className = "flex-container-row";
+
+        var labelName = document.createElement("label");
+        labelName.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].Name';
+        labelName.className = "label";
+        labelName.innerHTML = "Name";
+        var divName = document.createElement("div");
+        var inputName = document.createElement("input");
+        inputName.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].Name';
+        inputName.name = 'Recipe.Ingredients[' + ingredientNum + '].Name';
+        inputName.id = 'ingredient-name-' + ingredientNum;
+        inputName.className = "form-control";
+        divName.appendChild(inputName);
+
+        var labelAmount = document.createElement("label");
+        labelAmount.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].Amount';
+        labelAmount.className = "label";
+        labelAmount.innerHTML = "Amount";
+        var divAmount = document.createElement("div");
+        var inputAmount = document.createElement("input");
+        inputAmount.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].Amount';
+        inputAmount.name = 'Recipe.Ingredients[' + ingredientNum + '].Amount';
+        inputAmount.id = 'ingredient-amount-' + ingredientNum;
+        inputAmount.className = "form-control";
+        divAmount.appendChild(inputAmount);
+
+        var labelMeasuringUnit = document.createElement("label");
+        labelMeasuringUnit.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].MeasuringUnit';
+        labelMeasuringUnit.className = "label";
+        labelMeasuringUnit.innerHTML = "MeasuringUnit";
+        var divMeasuringUnit = document.createElement("div");
+        var inputMeasuringUnit = document.createElement("input");
+        inputMeasuringUnit.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].MeasuringUnit';
+        inputMeasuringUnit.name = 'Recipe.Ingredients[' + ingredientNum + '].MeasuringUnit';
+        inputMeasuringUnit.id = 'ingredient-measuringUnit-' + ingredientNum;
+        inputMeasuringUnit.className = "form-control";
+        divMeasuringUnit.appendChild(inputMeasuringUnit);
+
+        var img1 = document.createElement("img");
+        img1.src = "/images/delete-icon.png";
+        img1.alt = "Delete!";
+        img1.className = "icon color";
+        img1.onclick = deleteIngredient;
+
+        div1.appendChild(labelName);
+        div1.appendChild(divName);
+        div1.appendChild(labelAmount);
+        div1.appendChild(divAmount);
+        div1.appendChild(labelMeasuringUnit);
+        div1.appendChild(divMeasuringUnit);
+        div1.appendChild(img1);
+
+        ingredientDiv.appendChild(div1);
+
+        document.getElementById("Ingredients").appendChild(ingredientDiv);
+        setOfferedMeasuringUnits();
+        ingredientNum += 1;
+    }
+
+    function addInputsForStep() {
+        var stepDiv = document.createElement("div");
+        stepDiv.id = stepNum;
+
+        var div1 = document.createElement("div");
+        div1.className = "flex-container-row";
+
+        var labelOrder = document.createElement("label");
+        labelOrder.htmlFor = 'Recipe.Steps[' + stepNum + '].Order';
+        labelOrder.className = "label";
+        var stepOrder = stepNum + 1;
+        labelOrder.innerHTML = stepOrder + ".";
+
+        var divDescription = document.createElement("div");
+        var inputDescription = document.createElement("input");
+        inputDescription.htmlFor = 'Recipe.Steps[' + stepNum + '].Description';
+        inputDescription.name = 'Recipe.Steps[' + stepNum + '].Description';
+        inputDescription.className = "form-control step-input";
+        inputDescription.id = 'step-input-' + stepNum;
+        divDescription.appendChild(inputDescription);
+
+        var img1 = document.createElement("img");
+        img1.src = "/images/up-arrow.png";
+        img1.alt = "Up!";
+        img1.className = "icon color";
+        img1.onclick = upButton;
+
+        var img2 = document.createElement("img");
+        img2.src = "/images/down-arrow.png";
+        img2.alt = "Down!";
+        img2.className = "icon color";
+        img2.onclick = downButton;
+
+        var img3 = document.createElement("img");
+        img3.src = "/images/delete-icon.png";
+        img3.alt = "Delete!";
+        img3.className = "icon color";
+        img3.onclick = deleteStep;
+
+        div1.appendChild(labelOrder);
+        div1.appendChild(divDescription);
+        div1.appendChild(img1);
+        div1.appendChild(img2);
+        div1.appendChild(img3);
+
+        stepDiv.appendChild(div1);
+
+        document.getElementById("Steps").appendChild(stepDiv);
+        stepNum += 1;
     }
 </script>
