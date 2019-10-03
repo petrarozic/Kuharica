@@ -23,7 +23,7 @@ namespace Cookbook
             var context = services.GetRequiredService<AppDbContext>();
 
             var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-            DbInitializer.Seed(context, userManager);
+            DbInitializer.Seed(context, userManager).Wait();
             //using (var scope = host.Services.CreateScope())
             //{
             //    var services = scope.ServiceProvider;
