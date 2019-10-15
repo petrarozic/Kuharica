@@ -48,6 +48,14 @@ namespace Cookbook.Repositories
                                 .Include(r => r.ApplicationUser);
         }
 
+        public IEnumerable<Recipe> GetAllRecipeByName(string searchByName)
+        {
+            return _appDbContext.Recipes.Where(r => r.Name == searchByName)
+                                        .Include(r => r.RecipeIngredients)
+                                            .ThenInclude(r => r.Ingredient)
+                                        .Include(r => r.Steps);
+        }
+
         public Recipe GetRecipeById(int recipeId)
         {
             return _appDbContext.Recipes

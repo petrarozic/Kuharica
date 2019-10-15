@@ -39,5 +39,25 @@ namespace Cookbook.Controllers
 
             return View(homeViewModel);
         }
+
+        [HttpGet]
+        public IActionResult Index(string searchByName)
+        {
+            if (String.IsNullOrEmpty(searchByName)) return Index();
+
+            var homeViewModel = new HomeViewModel()
+            {
+                Recipes = _recipeRepository.GetAllRecipeByName(searchByName)
+                                            .OrderBy(r => r.Name)
+                                            .Select(u => new RecipeDTO
+                                            {
+                                                Id = u.RecipeId,
+                                                Name = u.Name
+                                            })
+                                            .ToList(),
+            };
+
+            return View(homeViewModel);
+        }
     }
 }
