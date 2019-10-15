@@ -1,5 +1,19 @@
 ﻿@model HomeViewModel
 <div class="flex-container-column">
+    <form asp-action="Index" method="get" role="form" class="section">
+        <div class="subtitle">
+            Search by:
+        </div>
+        <div class="">
+            <label asp-for="searchByName" class="label">
+                Recipe name:
+            </label>
+            <input asp-for="searchByName" class="form-control" />
+            <div class="buttons">
+                <input type="submit" class="btn color" value="Search" />
+            </div>
+        </div>
+    </form>
     <div>
         <div class="section">
             <div class="title">Recipes</div>

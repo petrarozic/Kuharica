@@ -11,6 +11,12 @@
     padding: 1rem;
 }
 
+.subtitle {
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 0.5rem;
+}
+
 .flex-container-column {
     display: flex;
     justify-content: center;
