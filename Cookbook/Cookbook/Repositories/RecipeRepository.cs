@@ -50,7 +50,7 @@ namespace Cookbook.Repositories
 
         public IEnumerable<Recipe> GetAllRecipeByName(string searchByName)
         {
-            return _appDbContext.Recipes.Where(r => r.Name == searchByName)
+            return _appDbContext.Recipes.Where(r => r.Name.Contains(searchByName))
                                         .Include(r => r.RecipeIngredients)
                                             .ThenInclude(r => r.Ingredient)
                                         .Include(r => r.Steps);
