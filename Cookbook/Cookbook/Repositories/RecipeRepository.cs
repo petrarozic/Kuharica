@@ -48,14 +48,6 @@ namespace Cookbook.Repositories
                                 .Include(r => r.ApplicationUser);
         }
 
-        public IEnumerable<Recipe> GetAllRecipeByName(string searchByName)
-        {
-            return _appDbContext.Recipes.Where(r => r.Name.Contains(searchByName))
-                                        .Include(r => r.RecipeIngredients)
-                                            .ThenInclude(r => r.Ingredient)
-                                        .Include(r => r.Steps);
-        }
-
         public Recipe GetRecipeById(int recipeId)
         {
             return _appDbContext.Recipes
@@ -65,6 +57,44 @@ namespace Cookbook.Repositories
                                 .Include(r => r.Steps)
                                 .Include(r => r.ApplicationUser)
                                 .First();
+        }
+
+        public IEnumerable<Recipe> SearchRecipe(string searchByName, string searchByIngredient)
+        {
+            if (String.IsNullOrEmpty(searchByName) && String.IsNullOrEmpty(searchByIngredient)) return GetAllRecipe();
+            if (!String.IsNullOrEmpty(searchByName) && String.IsNullOrEmpty(searchByIngredient)) return GetAllRecipeByName(searchByName);
+            if (String.IsNullOrEmpty(searchByName) && !String.IsNullOrEmpty(searchByIngredient)) return GetAllRecipeByIngredient(searchByIngredient);
+
+            return _appDbContext.Ingredients
+                                .Where(i => i.Name.Contains(searchByIngredient))
+                                .SelectMany(i => i.RecipeIngredients)
+                                .Select(ri => ri.Recipe)
+                                .Where(r => r.Name.Contains(searchByName))
+                                .Include(r => r.RecipeIngredients)
+                                    .ThenInclude(r => r.Ingredient)
+                                .Include(r => r.Steps)
+                                .Include(r => r.ApplicationUser);
+        }
+
+        private IEnumerable<Recipe> GetAllRecipeByName(string searchByName)
+        {
+            return _appDbContext.Recipes.Where(r => r.Name.Contains(searchByName))
+                                        .Include(r => r.RecipeIngredients)
+                                            .ThenInclude(r => r.Ingredient)
+                                        .Include(r => r.Steps)
+                                        .Include(r => r.ApplicationUser);
+        }
+
+        private IEnumerable<Recipe> GetAllRecipeByIngredient(string searchByIngredient)
+        {
+            return _appDbContext.Ingredients
+                                .Where(i => i.Name.Contains(searchByIngredient))
+                                .SelectMany(i => i.RecipeIngredients)
+                                .Select(ri => ri.Recipe)
+                                .Include(r => r.RecipeIngredients)
+                                    .ThenInclude(r => r.Ingredient)
+                                .Include(r => r.Steps)
+                                .Include(r => r.ApplicationUser);
         }
     }
 }

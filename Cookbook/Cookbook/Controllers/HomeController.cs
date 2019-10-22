@@ -41,13 +41,11 @@ namespace Cookbook.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search(string searchByName)
+        public IActionResult Search(string searchByName, string searchByIngredient)
         {
-            if (String.IsNullOrEmpty(searchByName)) return Index();
-
             var homeViewModel = new HomeViewModel()
             {
-                Recipes = _recipeRepository.GetAllRecipeByName(searchByName)
+                Recipes = _recipeRepository.SearchRecipe(searchByName, searchByIngredient)
                                             .OrderBy(r => r.Name)
                                             .Select(u => new RecipeDTO
                                             {

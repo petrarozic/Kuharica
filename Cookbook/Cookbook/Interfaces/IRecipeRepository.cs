@@ -13,6 +13,6 @@ namespace Cookbook.Interfaces
         void AddRecipe(Recipe recipe);
         void EditRecipe(Recipe updatedRecipe);
         void DeleteRecipe(int recipeId);
-        IEnumerable<Recipe> GetAllRecipeByName(string searchByName);
+        IEnumerable<Recipe> SearchRecipe(string searchByName, string searchByIngredient);
     }
 }
