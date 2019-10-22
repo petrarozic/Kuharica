@@ -41,7 +41,7 @@ namespace Cookbook.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(string searchByName)
+        public IActionResult Search(string searchByName)
         {
             if (String.IsNullOrEmpty(searchByName)) return Index();
 
@@ -57,7 +57,7 @@ namespace Cookbook.Controllers
                                             .ToList(),
             };
 
-            return View(homeViewModel);
+            return View("Index", homeViewModel);
         }
     }
 }
