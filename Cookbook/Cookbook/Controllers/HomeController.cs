@@ -34,7 +34,8 @@ namespace Cookbook.Controllers
                                                     Id = u.RecipeId,
                                                     Name = u.Name
                                                 })
-                                            .ToList()
+                                            .ToList(),
+                searchByIngredients = new List<string>()
             };
 
             return View(homeViewModel);
@@ -53,6 +54,7 @@ namespace Cookbook.Controllers
                                                 Name = u.Name
                                             })
                                             .ToList(),
+                searchByIngredients = searchByIngredients
             };
 
             return View("Index", homeViewModel);
