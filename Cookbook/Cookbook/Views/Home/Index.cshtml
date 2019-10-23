@@ -14,9 +14,15 @@
             </div>
 
             <label class="label">Ingredients:</label>
-            <div class="oneRow">
-                <label class="label">1.</label>
-                <input asp-for="searchByIngredients[0]" class="form-control" placeholder="Ingredient" />
+            <div class="flex-container-column">
+                <div id="Ingredients">
+                    <div class="oneRow">
+                        <!--id="ingredient-0"-->
+                        <label class="label">1.</label>
+                        <input asp-for="searchByIngredients[0]" class="form-control" placeholder="Ingredient" />
+                    </div>
+                </div>
+                <img src="~/images/plus-icon.png" class="icon color" alt="More ingredients!" id="addInputsForIngredient">
             </div>
 
             <div class="buttons">
@@ -51,9 +57,44 @@
         $(".recipe").on('click', function (e) {
             showRecipe(e.target.id);
         });
+
+        $("#addInputsForIngredient").click(addInputsForIngredient);
+        $("#Ingredients img").click(deleteIngredient);
     });
 
     function showRecipe(recipeId) {
         window.location.href = "/Recipe/?recipeId=" + recipeId;
     }
+
+    var ingredientNum = 0;
+    function addInputsForIngredient() {
+        ingredientNum++; 
+
+        var ingredientDiv = document.createElement("div");
+        //ingredientDiv.id = "ingredient-" + ingredientNum;
+        ingredientDiv.className = "oneRow";
+
+        var ingredientLabel = document.createElement("label");
+        ingredientLabel.className = "label";
+        var ingredientOrder = ingredientNum + 1;
+        ingredientLabel.innerText = ingredientOrder + ".";
+
+        var nameInput = document.createElement("input");
+        nameInput.name = "searchByIngredients[" + ingredientNum + "]"
+        nameInput.className = "form-control";
+        nameInput.placeholder = "Ingredient"; 
+
+        var img = document.createElement("img");
+        img.src = "/images/delete-icon.png";
+        img.alt = "Delete!";
+        img.className = "icon color";
+        img.onclick = deleteIngredient;
+
+        ingredientDiv.appendChild(ingredientLabel);
+        ingredientDiv.appendChild(nameInput);
+        ingredientDiv.appendChild(img);
+
+        document.getElementById("Ingredients").appendChild(ingredientDiv);
+    }
+
 </script>
