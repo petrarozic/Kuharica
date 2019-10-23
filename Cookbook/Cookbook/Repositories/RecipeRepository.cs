@@ -94,6 +94,7 @@ namespace Cookbook.Repositories
                                 .SelectMany(i => i.RecipeIngredients)
                                 .Distinct()
                                 .Select(ri => ri.Recipe)
+                                .Distinct()
                                 .Include(r => r.RecipeIngredients)
                                     .ThenInclude(r => r.Ingredient)
                                 .Include(r => r.Steps)
