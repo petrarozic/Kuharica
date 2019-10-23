@@ -62,7 +62,7 @@
 
         $("#addInputsForIngredient").click(addInputsForIngredient);
 
-        reloadSearchIngredients();
+        reloadSearchedIngredients();
     });
 
     function showRecipe(recipeId) {
@@ -119,7 +119,7 @@
         }
     }
 
-    function reloadSearchIngredients()
+    function reloadSearchedIngredients()
     {
         if ($("#searchedIngredients").children().length == 0) addInputsForIngredient();
         else {
