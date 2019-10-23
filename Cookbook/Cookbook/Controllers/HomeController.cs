@@ -41,11 +41,11 @@ namespace Cookbook.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search(string searchByName, string searchByIngredient)
+        public IActionResult Search(string searchByName, List<string> searchByIngredients)
         {
             var homeViewModel = new HomeViewModel()
             {
-                Recipes = _recipeRepository.SearchRecipe(searchByName, searchByIngredient)
+                Recipes = _recipeRepository.SearchRecipe(searchByName, searchByIngredients)
                                             .OrderBy(r => r.Name)
                                             .Select(u => new RecipeDTO
                                             {

@@ -2,6 +2,11 @@
     background-image: url('/images/background.png');
     background-repeat: repeat;
 }
+
+.oneRow {
+    display: flex;
+}
+
 /*-----------------------------------*/
 /*-------NewRecipe, Home-------------*/
 /*-----------------------------------*/
@@ -86,7 +91,7 @@
 }
 
 .buttons {
-    float: right;
+    text-align: end;
 }
 
 /*-----------------------------------*/

@@ -59,17 +59,18 @@ namespace Cookbook.Repositories
                                 .First();
         }
 
-        public IEnumerable<Recipe> SearchRecipe(string searchByName, string searchByIngredient)
+        public IEnumerable<Recipe> SearchRecipe(string searchByName, List<string> searchByIngredients)
         {
-            if (String.IsNullOrEmpty(searchByName) && String.IsNullOrEmpty(searchByIngredient)) return GetAllRecipe();
-            if (!String.IsNullOrEmpty(searchByName) && String.IsNullOrEmpty(searchByIngredient)) return GetAllRecipeByName(searchByName);
-            if (String.IsNullOrEmpty(searchByName) && !String.IsNullOrEmpty(searchByIngredient)) return GetAllRecipeByIngredient(searchByIngredient);
+            if (String.IsNullOrEmpty(searchByName) && ListIsNullOrEmpty(searchByIngredients)) return GetAllRecipe();
+            if (!String.IsNullOrEmpty(searchByName) && ListIsNullOrEmpty(searchByIngredients)) return GetAllRecipeByName(searchByName);
+            if (String.IsNullOrEmpty(searchByName) && !ListIsNullOrEmpty(searchByIngredients)) return GetAllRecipeByIngredients(searchByIngredients);
 
             return _appDbContext.Ingredients
-                                .Where(i => i.Name.Contains(searchByIngredient))
+                                .Where(i => CaseInsensitiveContains(i.Name, searchByIngredients))
                                 .SelectMany(i => i.RecipeIngredients)
                                 .Select(ri => ri.Recipe)
-                                .Where(r => r.Name.Contains(searchByName))
+                                .Distinct()
+                                .Where(r => CaseInsensitiveContains(r.Name, searchByName))
                                 .Include(r => r.RecipeIngredients)
                                     .ThenInclude(r => r.Ingredient)
                                 .Include(r => r.Steps)
@@ -78,23 +79,47 @@ namespace Cookbook.Repositories
 
         private IEnumerable<Recipe> GetAllRecipeByName(string searchByName)
         {
-            return _appDbContext.Recipes.Where(r => r.Name.Contains(searchByName))
-                                        .Include(r => r.RecipeIngredients)
-                                            .ThenInclude(r => r.Ingredient)
-                                        .Include(r => r.Steps)
-                                        .Include(r => r.ApplicationUser);
+            return _appDbContext.Recipes
+                                .Where(r => CaseInsensitiveContains(r.Name, searchByName))
+                                .Include(r => r.RecipeIngredients)
+                                    .ThenInclude(r => r.Ingredient)
+                                .Include(r => r.Steps)
+                                .Include(r => r.ApplicationUser);
         }
 
-        private IEnumerable<Recipe> GetAllRecipeByIngredient(string searchByIngredient)
+        private IEnumerable<Recipe> GetAllRecipeByIngredients(List<string> searchByIngredients)
         {
             return _appDbContext.Ingredients
-                                .Where(i => i.Name.Contains(searchByIngredient))
+                                .Where(i => CaseInsensitiveContains(i.Name, searchByIngredients))
                                 .SelectMany(i => i.RecipeIngredients)
+                                .Distinct()
                                 .Select(ri => ri.Recipe)
                                 .Include(r => r.RecipeIngredients)
                                     .ThenInclude(r => r.Ingredient)
                                 .Include(r => r.Steps)
                                 .Include(r => r.ApplicationUser);
+        }
+
+        private bool ListIsNullOrEmpty(List<string> list)
+        {
+            if (list == null) return true;
+            if (list.Count == 0) return true;
+            if (list[0] == null) return true;
+            return !list.Any();
+        }
+
+        private bool CaseInsensitiveContains(string name, List<string> searchedName)
+        {
+            foreach (var x in searchedName)
+            {
+                if (name.ToUpper().Contains(x.ToUpper())) return true;
+            }
+            return false;
+        }
+
+        private bool CaseInsensitiveContains(string name, string searchedName)
+        {
+            return name.ToUpper().Contains(searchedName.ToUpper());
         }
     }
 }
