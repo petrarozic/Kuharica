@@ -35,18 +35,24 @@ namespace Cookbook.Controllers
                                                     Name = u.Name
                                                 })
                                             .ToList(),
-                searchByIngredients = new List<string>()
+                searchByIngredients = new List<IngredientDTO>()
             };
 
             return View(homeViewModel);
         }
 
         [HttpGet]
-        public IActionResult Search(string searchByName, List<string> searchByIngredients)
+        public IActionResult Search(string searchByName, List<IngredientDTO> searchByIngredients)
         {
+            List<string> ingredientNameForSearch = new List<string>();
+            foreach (var x in searchByIngredients)
+            {
+                ingredientNameForSearch.Add(x.Name);
+            }
+
             var homeViewModel = new HomeViewModel()
             {
-                Recipes = _recipeRepository.SearchRecipe(searchByName, searchByIngredients)
+                Recipes = _recipeRepository.SearchRecipe(searchByName, ingredientNameForSearch)
                                             .OrderBy(r => r.Name)
                                             .Select(u => new RecipeDTO
                                             {

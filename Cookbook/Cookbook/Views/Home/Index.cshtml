@@ -2,7 +2,7 @@
 <div id="searchedIngredients" hidden>
     @foreach (var ingredient in Model.searchByIngredients)
     {
-        <input value="@ingredient" />
+        <input id="@ingredient.Name"  value="@ingredient.Amount" name="@ingredient.MeasuringUnit"/>
     }
 </div>
 
@@ -83,10 +83,22 @@
         ingredientLabel.innerText = ingredientOrder + ".";
 
         var nameInput = document.createElement("input");
-        nameInput.name = "searchByIngredients[" + ingredientNum + "]";
+        nameInput.name = "searchByIngredients[" + ingredientNum + "].Name";
         nameInput.id = "search-by-ingredients-name-" + ingredientNum;
         nameInput.className = "form-control";
         nameInput.placeholder = "Ingredient"; 
+
+        var amountInput = document.createElement("input");
+        amountInput.name = "searchByIngredients[" + ingredientNum + "].Amount";
+        amountInput.id = "search-by-ingredients-amount-" + ingredientNum;
+        amountInput.className = "form-control";
+        amountInput.placeholder = "Amount";
+
+        var measuringUnitInput = document.createElement("input");
+        measuringUnitInput.name = "searchByIngredients[" + ingredientNum + "].MeasuringUnit";
+        measuringUnitInput.id = "search-by-ingredients-measuringunit-" + ingredientNum;
+        measuringUnitInput.className = "form-control";
+        measuringUnitInput.placeholder = "Measuring unit";
 
         var img = document.createElement("img");
         img.src = "/images/delete-icon.png";
@@ -96,6 +108,8 @@
 
         ingredientDiv.appendChild(ingredientLabel);
         ingredientDiv.appendChild(nameInput);
+        ingredientDiv.appendChild(amountInput);
+        ingredientDiv.appendChild(measuringUnitInput);
         ingredientDiv.appendChild(img);
 
         document.getElementById("Ingredients").appendChild(ingredientDiv);
@@ -112,6 +126,8 @@
             for (var k = i; k < $("#Ingredients").children().length - 1; k++) {
                 kNext = k + 1;
                 $("#search-by-ingredients-name-" + k).val($("#search-by-ingredients-name-" + kNext).val());
+                $("#search-by-ingredients-amount-" + k).val($("#search-by-ingredients-amount-" + kNext).val());
+                $("#search-by-ingredients-measuringunit-" + k).val($("#search-by-ingredients-measuringunit-" + kNext).val());
             }
 
             $("#Ingredients").children().last().remove();
@@ -136,12 +152,26 @@
                 ingredientLabel.innerText = ingredientOrder + ".";
 
                 var nameInput = document.createElement("input");
-                nameInput.name = "searchByIngredients[" + ingredientNum + "]";
+                nameInput.name = "searchByIngredients[" + ingredientNum + "].Name";
                 nameInput.id = "search-by-ingredients-name-" + ingredientNum;
                 nameInput.className = "form-control";
                 nameInput.placeholder = "Ingredient";
-                nameInput.value = $(this).val();
+                nameInput.value = $(this).attr("id");
 
+                var amountInput = document.createElement("input");
+                amountInput.name = "searchByIngredients[" + ingredientNum + "].Amount";
+                amountInput.id = "search-by-ingredients-amount-" + ingredientNum;
+                amountInput.className = "form-control";
+                amountInput.placeholder = "Amount";
+                amountInput.value = $(this).val();
+
+                var measuringUnitInput = document.createElement("input");
+                measuringUnitInput.name = "searchByIngredients[" + ingredientNum + "].MeasuringUnit";
+                measuringUnitInput.id = "search-by-ingredients-measuringunit-" + ingredientNum;
+                measuringUnitInput.className = "form-control";
+                measuringUnitInput.value = $(this).attr("name");
+
+                measuringUnitInput.placeholder = "Measuring unit";
                 var img = document.createElement("img");
                 img.src = "/images/delete-icon.png";
                 img.alt = "Delete!";
@@ -150,6 +180,8 @@
 
                 ingredientDiv.appendChild(ingredientLabel);
                 ingredientDiv.appendChild(nameInput);
+                ingredientDiv.appendChild(amountInput);
+                ingredientDiv.appendChild(measuringUnitInput);
                 ingredientDiv.appendChild(img);
 
                 document.getElementById("Ingredients").appendChild(ingredientDiv);
