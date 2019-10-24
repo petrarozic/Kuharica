@@ -62,7 +62,7 @@
 
         $("#addInputsForIngredient").click(addInputsForIngredient);
 
-        reloadSearchedIngredients();
+        getOfferedIngredients();
     });
 
     function showRecipe(recipeId) {
@@ -100,7 +100,7 @@
         var nameInput = document.createElement("input");
         nameInput.name = "searchByIngredients[" + ingredientNum + "].Name";
         nameInput.id = "search-by-ingredients-name-" + ingredientNum;
-        nameInput.className = "form-control";
+        nameInput.className = "form-control offeredIngredients";
         nameInput.placeholder = "Ingredient"; 
 
         var amountInput = document.createElement("input");
@@ -128,6 +128,7 @@
         ingredientDiv.appendChild(img);
 
         document.getElementById("Ingredients").appendChild(ingredientDiv);
+        setOfferedIngredients();
     }
 
     function deleteIngredient() {
@@ -169,7 +170,7 @@
                 var nameInput = document.createElement("input");
                 nameInput.name = "searchByIngredients[" + ingredientNum + "].Name";
                 nameInput.id = "search-by-ingredients-name-" + ingredientNum;
-                nameInput.className = "form-control";
+                nameInput.className = "form-control offeredIngredients";
                 nameInput.placeholder = "Ingredient";
                 nameInput.value = $(this).attr("id");
 
@@ -200,7 +201,36 @@
                 ingredientDiv.appendChild(img);
 
                 document.getElementById("Ingredients").appendChild(ingredientDiv);
+                setOfferedIngredients();
             });
         }
+    }
+
+    var offeredIngredients = [];
+    function getOfferedIngredients() {
+        $.ajax("/Home/getOfferedIngredients",
+            {
+                type: "GET",
+                url: "/Home/getOfferedIngredients",
+
+                success: function (data) {
+                    console.log("success - Home/getOfferedIngredients");
+                    offeredIngredients = data;
+                    reloadSearchedIngredients();
+                },
+                failure: function (data) {
+                    console.log("failure - Home/getOfferedIngredients");
+                },
+                error: function (data) {
+                    console.log("error - Home/getOfferedIngredients");
+                }
+            }
+        );
+    }
+
+    function setOfferedIngredients() {
+        $(".offeredIngredients").last().autocomplete({
+            source: offeredIngredients
+        });
     }
 </script>

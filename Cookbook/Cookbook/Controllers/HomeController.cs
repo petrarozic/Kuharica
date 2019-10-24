@@ -16,10 +16,12 @@ namespace Cookbook.Controllers
     public class HomeController : Controller
     {
         private readonly IRecipeRepository _recipeRepository;
+        private readonly IIngredientRepository _ingredientRepository;
 
-        public HomeController(IRecipeRepository recipeRepository)
+        public HomeController(IRecipeRepository recipeRepository, IIngredientRepository ingredientRepository)
         {
             _recipeRepository = recipeRepository;
+            _ingredientRepository = ingredientRepository;
         }
 
         // GET: /<controller>/
@@ -66,6 +68,19 @@ namespace Cookbook.Controllers
             };
 
             return View("Index", homeViewModel);
+        }
+
+        [HttpGet]
+        public JsonResult getOfferedIngredients()
+        {
+            List<string> offeredIngredients = new List<string>();
+            var ingredients = _ingredientRepository.GetAllIngredient().ToList();
+            foreach (var i in ingredients)
+            {
+                offeredIngredients.Add(i.Name);
+            }
+
+            return Json(offeredIngredients);
         }
     }
 }

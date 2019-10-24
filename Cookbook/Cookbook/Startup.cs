@@ -34,6 +34,7 @@ namespace Cookbook
             services.AddDefaultIdentity<ApplicationUser>().AddEntityFrameworkStores<AppDbContext>();
 
             services.AddTransient<IRecipeRepository, RecipeRepository>();
+            services.AddTransient<IIngredientRepository, IngredientRepository>();
 
             services.AddMvc();
         }
