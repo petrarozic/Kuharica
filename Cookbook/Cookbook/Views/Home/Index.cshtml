@@ -63,6 +63,7 @@
         $("#addInputsForIngredient").click(addInputsForIngredient);
 
         getOfferedIngredients();
+        
     });
 
     function showRecipe(recipeId) {
@@ -109,10 +110,10 @@
         amountInput.className = "form-control";
         amountInput.placeholder = "Amount";
 
-        var measuringUnitInput = document.createElement("input");
+        var measuringUnitInput = document.createElement("select");
         measuringUnitInput.name = "searchByIngredients[" + ingredientNum + "].MeasuringUnit";
         measuringUnitInput.id = "search-by-ingredients-measuringunit-" + ingredientNum;
-        measuringUnitInput.className = "form-control";
+        measuringUnitInput.className = "form-control offeredMeasuringUnit";
         measuringUnitInput.placeholder = "Measuring unit";
 
         var img = document.createElement("img");
@@ -129,6 +130,7 @@
 
         document.getElementById("Ingredients").appendChild(ingredientDiv);
         setOfferedIngredients();
+        setOfferedMeasuringUnit();
     }
 
     function deleteIngredient() {
@@ -181,10 +183,10 @@
                 amountInput.placeholder = "Amount";
                 amountInput.value = $(this).val();
 
-                var measuringUnitInput = document.createElement("input");
+                var measuringUnitInput = document.createElement("select");
                 measuringUnitInput.name = "searchByIngredients[" + ingredientNum + "].MeasuringUnit";
                 measuringUnitInput.id = "search-by-ingredients-measuringunit-" + ingredientNum;
-                measuringUnitInput.className = "form-control";
+                measuringUnitInput.className = "form-control offeredMeasuringUnit";
                 measuringUnitInput.value = $(this).attr("name");
 
                 measuringUnitInput.placeholder = "Measuring unit";
@@ -202,6 +204,7 @@
 
                 document.getElementById("Ingredients").appendChild(ingredientDiv);
                 setOfferedIngredients();
+                setOfferedMeasuringUnit();
             });
         }
     }
@@ -216,7 +219,7 @@
                 success: function (data) {
                     console.log("success - Home/getOfferedIngredients");
                     offeredIngredients = data;
-                    reloadSearchedIngredients();
+                    getOfferedMeasuringUnits();
                 },
                 failure: function (data) {
                     console.log("failure - Home/getOfferedIngredients");
@@ -232,5 +235,35 @@
         $(".offeredIngredients").last().autocomplete({
             source: offeredIngredients
         });
+    }
+
+    var offeredMeasuringUnit = [];
+    function getOfferedMeasuringUnits() {
+        $.ajax(
+            {
+                type: "GET",
+                url: "/Home/getOfferedMeasuringUnits",
+
+                success: function (data) {
+                    offeredMeasuringUnit = data;
+                    console.log("success - Home/getOfferedMeasuringUnit");
+                    reloadSearchedIngredients();
+                },
+                failure: function (data) {
+                    console.log("failure - Home/getOfferedMeasuringUnit");
+                }, 
+                error: function (data) {
+                    console.log("error - Home/getOfferedMeasuringUnit");
+                } 
+            });
+    }
+
+    function setOfferedMeasuringUnit() {
+        for (i = 0; i < offeredMeasuringUnit.length; i++) {
+            var options = document.createElement("option");
+            options.innerHTML = offeredMeasuringUnit[i].name;
+            options.value = offeredMeasuringUnit[i].value
+            $(".offeredMeasuringUnit").last().append(options);
+        }
     }
 </script>

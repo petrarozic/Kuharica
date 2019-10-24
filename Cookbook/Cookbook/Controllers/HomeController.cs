@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Cookbook.DTO;
+using Cookbook.Enums;
 using Cookbook.Interfaces;
 using Cookbook.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -81,6 +82,21 @@ namespace Cookbook.Controllers
             }
 
             return Json(offeredIngredients);
+        }
+
+        [HttpGet]
+        public JsonResult getOfferedMeasuringUnits()
+        {
+            List<MeasuringUnitDTO> measuringUnitDTOs = new List<MeasuringUnitDTO>();
+            foreach (var x in Enum.GetValues(typeof(MeasuringUnitType)))
+            {
+                measuringUnitDTOs.Add(new MeasuringUnitDTO()
+                {
+                    Value = (int)x,
+                    Name = x.ToString()
+                });
+            }
+            return Json(measuringUnitDTOs);
         }
     }
 }
