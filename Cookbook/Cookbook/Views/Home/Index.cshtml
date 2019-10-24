@@ -66,7 +66,22 @@
     });
 
     function showRecipe(recipeId) {
-        window.location.href = "/Recipe/?recipeId=" + recipeId;
+        var ingredients = [];
+        $("#searchedIngredients").children().each(function () {
+            var ingredient = {
+                name: $(this).attr("id"),
+                amount: $(this).val(),
+                measuringUnit: $(this).attr("name")
+            };
+            ingredients.push(ingredient);
+        });
+
+        var parametri = {
+            recipeId: recipeId,
+            searchIngredients: JSON.stringify(ingredients),
+        };
+
+        window.location.href = "/Recipe/?" + $.param(parametri);
     }
 
     var ingredientNum = -1;
