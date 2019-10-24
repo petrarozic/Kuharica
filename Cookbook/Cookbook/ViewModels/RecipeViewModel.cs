@@ -11,5 +11,6 @@ namespace Cookbook.ViewModels
     {
         public RecipeDetailDTO Recipe { get; set; }
         public bool UsersMatch { get; set; }
+        public List<AdjustedIngredientDTO> AdjustedIngredients { get; set; }
     }
 }

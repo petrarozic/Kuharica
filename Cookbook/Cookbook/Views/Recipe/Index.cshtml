@@ -6,7 +6,7 @@
         <span class="element">Created by: @Model.Recipe.UserEmail</span>
         <input hidden id="recipeId" value="@Model.Recipe.RecipeId" />
 
-        <div class="flex-container-row section">
+        <div class="flex-container-row section" style="justify-content: center">
             <table class="element">
                 <thead>
                     <tr>
@@ -23,6 +23,26 @@
                     }
                 </tbody>
             </table>
+
+            @if (Model.AdjustedIngredients.Any())
+            {
+                <table class="element" style="margin-left: 2rem">
+                    <thead>
+                        <tr>
+                            <th scope="col">Custom</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var adjustedIngredient in Model.AdjustedIngredients)
+                        {
+                            <tr>
+                                <td>@adjustedIngredient.Amount @adjustedIngredient.MeasuringUnit</td>
+                                <td>@adjustedIngredient.Name</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
         </div>
 
         <div class="flex-container-row section">

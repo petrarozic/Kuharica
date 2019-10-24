@@ -5,6 +5,7 @@ using Cookbook.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace Cookbook.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index(int recipeId)
+        public async Task<IActionResult> Index(int recipeId, string searchIngredients)
         {
             Recipe recipe = _recipeRepository.GetRecipeById(recipeId);
 
@@ -73,7 +74,100 @@ namespace Cookbook.Controllers
                 recipeViewModel.UsersMatch = false;
             }
 
+            //kreiram listu IngredientDTO po kojima se pretrazuje
+            List<IngredientDTO> searchedIngredients = new List<IngredientDTO>();
+            if (!String.IsNullOrEmpty(searchIngredients))
+            {
+                var settings = new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                };
+
+                searchedIngredients = JsonConvert.DeserializeObject<List<IngredientDTO>>(searchIngredients, settings);
+            }
+
+            //kopiram sastojke iz orginalnog recepta
+            List<AdjustedIngredientDTO> adjustedIngredients = new List<AdjustedIngredientDTO>();
+            foreach (var x in recipeViewModel.Recipe.Ingredients)
+            {
+                AdjustedIngredientDTO adjustedIngredient = new AdjustedIngredientDTO()
+                {
+                    Name = x.Name,
+                    Amount = (double)x.Amount,
+                    MeasuringUnit = x.MeasuringUnit
+                };
+                adjustedIngredients.Add(adjustedIngredient);
+            }
+
+            //ima li zadane kolicine i mjerne jedinice 
+            bool percentageExist = false;
+            if (searchedIngredients.Any())
+            {
+                double percentage = 0;
+                foreach (var x in searchedIngredients)
+                {
+                    if (x.Amount > 0)
+                    {
+                        var tempIngredinet = adjustedIngredients.Find(r => r.Name == x.Name);
+                        if (IsComparableMeasuringUnits(x.MeasuringUnit, tempIngredinet.MeasuringUnit))
+                        {
+                            double tempPercentage = 0;
+                            tempPercentage = ConvertToSpecificMeasuringUnit(x.MeasuringUnit, x.Amount) /
+                                            ConvertToSpecificMeasuringUnit(tempIngredinet.MeasuringUnit, tempIngredinet.Amount);
+                            if (!percentageExist && tempPercentage != 1)
+                            {
+                                percentageExist = true;
+                                percentage = tempPercentage;
+                            }
+                            else if (percentage > tempPercentage) percentage = tempPercentage;
+                        }
+                    }
+                }
+                if (percentageExist)
+                {
+                    foreach (var x in adjustedIngredients)
+                    {
+                        x.Amount = (double)x.Amount * percentage;
+                    }
+                }
+            }
+
+            if (percentageExist) recipeViewModel.AdjustedIngredients = adjustedIngredients;
+            //no need to display adjustedRecipe
+            else recipeViewModel.AdjustedIngredients = new List<AdjustedIngredientDTO>();
+
             return View(recipeViewModel);
+        }
+
+        private bool IsComparableMeasuringUnits(string measuringUnit1, string measuringUnit2)
+        {
+            List<string> weightMU = new List<string>(){ "g", "dag", "kg" };
+            List<string> volumeMU = new List<string>() { "mL", "L", "dL" };
+            List<string> piecesMU = new List<string>() { "kom" };
+
+            if (weightMU.Contains(measuringUnit1) && weightMU.Contains(measuringUnit2)) return true;
+            if (volumeMU.Contains(measuringUnit1) && volumeMU.Contains(measuringUnit2)) return true;
+            if (piecesMU.Contains(measuringUnit1) && piecesMU.Contains(measuringUnit2)) return true;
+
+            return false;
+        }
+
+        private double ConvertToSpecificMeasuringUnit(string measuringUnit, double amount)
+        {
+            switch (measuringUnit)
+            {
+                case "kg":
+                    return amount * 100;
+                case "g":
+                    return amount * 0.1;
+                case "kom":
+                    return amount;
+                case "L":
+                    return amount * 10;
+                case "ml":
+                    return amount * 0.01;
+            }
+            return amount;
         }
 
         public IActionResult NewRecipe()
