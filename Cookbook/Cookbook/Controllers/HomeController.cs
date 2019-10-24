@@ -30,10 +30,10 @@ namespace Cookbook.Controllers
                 Recipes = _recipeRepository.GetAllRecipe()
                                             .OrderBy(r => r.Name)
                                             .Select(u => new RecipeDTO
-                                                {
-                                                    Id = u.RecipeId,
-                                                    Name = u.Name
-                                                })
+                                            {
+                                                Id = u.RecipeId,
+                                                Name = u.Name
+                                            })
                                             .ToList(),
                 searchByIngredients = new List<IngredientDTO>()
             };
@@ -44,6 +44,8 @@ namespace Cookbook.Controllers
         [HttpGet]
         public IActionResult Search(string searchByName, List<IngredientDTO> searchByIngredients)
         {
+            searchByIngredients.RemoveAll(x => String.IsNullOrWhiteSpace(x.Name));
+
             List<string> ingredientNameForSearch = new List<string>();
             foreach (var x in searchByIngredients)
             {
