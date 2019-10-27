@@ -9,6 +9,6 @@ namespace Cookbook.DTO
     {
         public string Name { get; set; }
         public int Amount { get; set; }
-        public string MeasuringUnit { get; set; }
+        public Enums.MeasuringUnitType MeasuringUnit { get; set; }
     }
 }

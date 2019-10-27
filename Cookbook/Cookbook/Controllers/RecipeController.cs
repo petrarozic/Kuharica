@@ -139,11 +139,21 @@ namespace Cookbook.Controllers
             return View(recipeViewModel);
         }
 
-        private bool IsComparableMeasuringUnits(string measuringUnit1, string measuringUnit2)
+        private bool IsComparableMeasuringUnits(Enums.MeasuringUnitType measuringUnit1, Enums.MeasuringUnitType measuringUnit2)
         {
-            List<string> weightMU = new List<string>(){ "g", "dag", "kg" };
-            List<string> volumeMU = new List<string>() { "mL", "L", "dL" };
-            List<string> piecesMU = new List<string>() { "kom" };
+            List<Enums.MeasuringUnitType> weightMU = new List<Enums.MeasuringUnitType>(){
+                Enums.MeasuringUnitType.g,
+                Enums.MeasuringUnitType.dag,
+                Enums.MeasuringUnitType.kg
+            };
+            List<Enums.MeasuringUnitType> volumeMU = new List<Enums.MeasuringUnitType>() {
+                Enums.MeasuringUnitType.mL,
+                Enums.MeasuringUnitType.L,
+                Enums.MeasuringUnitType.dL
+            };
+            List<Enums.MeasuringUnitType> piecesMU = new List<Enums.MeasuringUnitType>() {
+                Enums.MeasuringUnitType.kom
+            };
 
             if (weightMU.Contains(measuringUnit1) && weightMU.Contains(measuringUnit2)) return true;
             if (volumeMU.Contains(measuringUnit1) && volumeMU.Contains(measuringUnit2)) return true;
@@ -152,19 +162,19 @@ namespace Cookbook.Controllers
             return false;
         }
 
-        private double ConvertToSpecificMeasuringUnit(string measuringUnit, double amount)
+        private double ConvertToSpecificMeasuringUnit(Enums.MeasuringUnitType measuringUnit, double amount)
         {
             switch (measuringUnit)
             {
-                case "kg":
+                case Enums.MeasuringUnitType.kg:
                     return amount * 100;
-                case "g":
+                case Enums.MeasuringUnitType.g:
                     return amount * 0.1;
-                case "kom":
+                case Enums.MeasuringUnitType.kom:
                     return amount;
-                case "L":
+                case Enums.MeasuringUnitType.L:
                     return amount * 10;
-                case "ml":
+                case Enums.MeasuringUnitType.mL:
                     return amount * 0.01;
             }
             return amount;

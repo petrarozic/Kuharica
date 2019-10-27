@@ -45,7 +45,7 @@ namespace Cookbook.Models
                     new RecipeIngredient {
                         Ingredient = context.Ingredients.FirstOrDefault(i => i.Name == "Meso"),
                         Amount = 1,
-                        MeasuringUnit = "kg"
+                        MeasuringUnit = Enums.MeasuringUnitType.kg
                     },
                 };
 
@@ -54,12 +54,12 @@ namespace Cookbook.Models
                     new RecipeIngredient {
                         Ingredient = context.Ingredients.FirstOrDefault(i => i.Name == "Meso"),
                         Amount = 1,
-                        MeasuringUnit = "kg"
+                        MeasuringUnit = Enums.MeasuringUnitType.kg
                     },
                     new RecipeIngredient {
                         Ingredient = context.Ingredients.FirstOrDefault(i => i.Name == "Tjestenina"),
                         Amount = 750,
-                        MeasuringUnit = "g"
+                        MeasuringUnit = Enums.MeasuringUnitType.g
                     }
                 };
 
@@ -68,12 +68,12 @@ namespace Cookbook.Models
                     new RecipeIngredient {
                         Ingredient = context.Ingredients.FirstOrDefault(i => i.Name == "Meso"),
                         Amount = 500,
-                        MeasuringUnit = "g"
+                        MeasuringUnit = Enums.MeasuringUnitType.g
                     },
                     new RecipeIngredient {
                         Ingredient = context.Ingredients.FirstOrDefault(i => i.Name == "Tjestenina"),
                         Amount = 500,
-                        MeasuringUnit = "g"
+                        MeasuringUnit = Enums.MeasuringUnitType.g
                     }
                 };
 
@@ -82,12 +82,12 @@ namespace Cookbook.Models
                     new RecipeIngredient {
                         Ingredient = context.Ingredients.FirstOrDefault(i => i.Name == "Zelje"),
                         Amount = 450,
-                        MeasuringUnit = "g"
+                        MeasuringUnit = Enums.MeasuringUnitType.g
                     },
                     new RecipeIngredient {
                         Ingredient = context.Ingredients.FirstOrDefault(i => i.Name == "Grah"),
                         Amount = 40,
-                        MeasuringUnit = "dag"
+                        MeasuringUnit = Enums.MeasuringUnitType.dag
                     }
                 };
 
@@ -96,17 +96,17 @@ namespace Cookbook.Models
                     new RecipeIngredient {
                         Ingredient = context.Ingredients.FirstOrDefault(i => i.Name == "Sir"),
                         Amount = 25,
-                        MeasuringUnit = "dag"
+                        MeasuringUnit = Enums.MeasuringUnitType.dag
                     },
                     new RecipeIngredient {
                         Ingredient = context.Ingredients.FirstOrDefault(i => i.Name == "Sunka"),
                         Amount = 25,
-                        MeasuringUnit = "dag"
+                        MeasuringUnit = Enums.MeasuringUnitType.dag
                     },
                     new RecipeIngredient {
                         Ingredient = context.Ingredients.FirstOrDefault(i => i.Name == "Gljive"),
                         Amount = 30,
-                        MeasuringUnit = "dag"
+                        MeasuringUnit = Enums.MeasuringUnitType.dag
                     }
                 };
 
@@ -115,12 +115,12 @@ namespace Cookbook.Models
                     new RecipeIngredient {
                         Ingredient = context.Ingredients.FirstOrDefault(i => i.Name == "Meso"),
                         Amount = 500,
-                        MeasuringUnit = "g"
+                        MeasuringUnit = Enums.MeasuringUnitType.g
                     },
                     new RecipeIngredient {
                         Ingredient = context.Ingredients.FirstOrDefault(i => i.Name == "Riža"),
                         Amount = 400,
-                        MeasuringUnit = "g"
+                        MeasuringUnit = Enums.MeasuringUnitType.g
                     }
                 };
 
@@ -129,12 +129,12 @@ namespace Cookbook.Models
                     new RecipeIngredient {
                         Ingredient = context.Ingredients.FirstOrDefault(i => i.Name == "Tjestenina"),
                         Amount = 250,
-                        MeasuringUnit = "g"
+                        MeasuringUnit = Enums.MeasuringUnitType.g
                     },
                     new RecipeIngredient {
                         Ingredient = context.Ingredients.FirstOrDefault(i => i.Name == "Krumpir"),
                         Amount = 250,
-                        MeasuringUnit = "g"
+                        MeasuringUnit = Enums.MeasuringUnitType.g
                     }
                 };
 
@@ -143,12 +143,12 @@ namespace Cookbook.Models
                     new RecipeIngredient {
                         Ingredient = context.Ingredients.FirstOrDefault(i => i.Name == "Jaja"),
                         Amount = 3,
-                        MeasuringUnit = "kom"
+                        MeasuringUnit = Enums.MeasuringUnitType.kom
                     },
                     new RecipeIngredient {
                         Ingredient = context.Ingredients.FirstOrDefault(i => i.Name == "Špek"),
                         Amount = 100,
-                        MeasuringUnit = "g"
+                        MeasuringUnit = Enums.MeasuringUnitType.g
                     }
                 };
 
@@ -157,12 +157,12 @@ namespace Cookbook.Models
                     new RecipeIngredient {
                         Ingredient = context.Ingredients.FirstOrDefault(i => i.Name == "Meso"),
                         Amount = 250,
-                        MeasuringUnit = "g"
+                        MeasuringUnit = Enums.MeasuringUnitType.g
                     },
                     new RecipeIngredient {
                         Ingredient = context.Ingredients.FirstOrDefault(i => i.Name == "Sir"),
                         Amount = 100,
-                        MeasuringUnit = "g"
+                        MeasuringUnit = Enums.MeasuringUnitType.g
                     }
                 };
 
@@ -170,11 +170,11 @@ namespace Cookbook.Models
                 {
                     new RecipeIngredient { Ingredient = context.Ingredients.FirstOrDefault(i => i.Name == "Meso"),
                         Amount = 40,
-                        MeasuringUnit = "dag"
+                        MeasuringUnit = Enums.MeasuringUnitType.dag
                     },
                     new RecipeIngredient { Ingredient = context.Ingredients.FirstOrDefault(i => i.Name == "Mahune"),
                         Amount = 1,
-                        MeasuringUnit = "kg"
+                        MeasuringUnit = Enums.MeasuringUnitType.kg
                     }
                 };
 
