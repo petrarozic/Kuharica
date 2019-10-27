@@ -34,7 +34,7 @@
 
                             <label asp-for="Recipe.Ingredients[0].MeasuringUnit" class="label">MeasuringUnit</label>
                             <div>
-                                <input asp-for="Recipe.Ingredients[0].MeasuringUnit" id="ingredient-measuringUnit-0" class="form-control"/>
+                                <select asp-for="Recipe.Ingredients[0].MeasuringUnit" id="ingredient-measuringUnit-0" class="form-control offeredMeasuringUnit"/></select>
                             </div>
                             <img src="~/images/delete-icon.png" class="icon color" alt="Delete!">
                         </div>
@@ -83,6 +83,8 @@
         $("#Steps img")[0].onclick = upButton;
         $("#Steps img")[1].onclick = downButton;
         $("#Steps img")[2].onclick = deleteStep;
+
+        getOfferedMeasuringUnits();
     });
 
     var ingredientNum = 0;
@@ -125,11 +127,11 @@
         labelMeasuringUnit.className = "label";
         labelMeasuringUnit.innerHTML = "MeasuringUnit";
         var divMeasuringUnit = document.createElement("div");
-        var inputMeasuringUnit = document.createElement("input");
+        var inputMeasuringUnit = document.createElement("select");
         inputMeasuringUnit.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].MeasuringUnit';
         inputMeasuringUnit.name = 'Recipe.Ingredients[' + ingredientNum + '].MeasuringUnit';
         inputMeasuringUnit.id = 'ingredient-measuringUnit-' + ingredientNum;
-        inputMeasuringUnit.className = "form-control";
+        inputMeasuringUnit.className = "form-control offeredMeasuringUnit";
         divMeasuringUnit.appendChild(inputMeasuringUnit);
 
         var img1 = document.createElement("img");
@@ -149,6 +151,7 @@
         ingredientDiv.appendChild(div1);
 
         document.getElementById("Ingredients").appendChild(ingredientDiv);
+        setOfferedMeasuringUnits();
     }
 
     function deleteIngredient() {
@@ -261,6 +264,36 @@
             var str = $("#step-input-" + previousStepId).val();
             $("#step-input-" + previousStepId).val($("#step-input-" + stepId).val());
             $("#step-input-" + stepId).val(str);
+        }
+    }
+
+    var offeredMeasuringUnit = [];
+    function getOfferedMeasuringUnits() {
+        $.ajax(
+            {
+                type: "GET",
+                url: "/Home/getOfferedMeasuringUnits",
+
+                success: function (data) {
+                    offeredMeasuringUnit = data;
+                    console.log("success - Home/getOfferedMeasuringUnit");
+                    setOfferedMeasuringUnits();
+                },
+                failure: function (data) {
+                    console.log("failure - Home/getOfferedMeasuringUnit");
+                },
+                error: function (data) {
+                    console.log("error - Home/getOfferedMeasuringUnit");
+                }
+            });
+    }
+
+    function setOfferedMeasuringUnits() {
+        for (i = 0; i < offeredMeasuringUnit.length; i++) {
+            var options = document.createElement("option");
+            options.innerHTML = offeredMeasuringUnit[i].name;
+            options.value = offeredMeasuringUnit[i].value
+            $(".offeredMeasuringUnit").last().append(options);
         }
     }
 </script>
