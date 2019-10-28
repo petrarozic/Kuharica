@@ -54,6 +54,7 @@
         $('input[value="Reset"')[0].onclick = resetButton;
 
         getOfferedMeasuringUnits();
+        getOfferedIngredients();
     });
 
     function uploadRecipeData() {
@@ -80,7 +81,6 @@
     var stepNum = 0;
 
     function setRecipeData(data) {
-        console.log(data);
         $('input[name="Recipe.Name"]').val(data['recipe']['name']);
         //$('input[name="Recipe.Public"]').prop("checked", data['recipe']['public'])
 
@@ -101,7 +101,7 @@
             inputName.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].Name';
             inputName.name = 'Recipe.Ingredients[' + ingredientNum + '].Name';
             inputName.id = 'ingredient-name-' + ingredientNum;
-            inputName.className = "form-control";
+            inputName.className = "form-control offeredIngredients";
             inputName.value = data["recipe"]["ingredients"][i]["name"];
             divName.appendChild(inputName);
 
@@ -150,6 +150,7 @@
             ingredientNum += 1;
             setOfferedMeasuringUnits();
             inputMeasuringUnit.selectedIndex = data["recipe"]["ingredients"][i]["measuringUnit"];
+            setOfferedIngredients();
         }
         var j = 0;
         for (j = 0; j < data["recipe"]["steps"].length; j++) {
@@ -274,7 +275,7 @@
         inputName.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].Name';
         inputName.name = 'Recipe.Ingredients[' + ingredientNum + '].Name';
         inputName.id = 'ingredient-name-' + ingredientNum;
-        inputName.className = "form-control";
+        inputName.className = "form-control offeredIngredients";
         divName.appendChild(inputName);
 
         var labelAmount = document.createElement("label");
@@ -319,6 +320,7 @@
 
         document.getElementById("Ingredients").appendChild(ingredientDiv);
         setOfferedMeasuringUnits();
+        setOfferedIngredients();
         ingredientNum += 1;
     }
 
@@ -410,5 +412,33 @@
             options.value = offeredMeasuringUnit[i].value
             $(".offeredMeasuringUnit").last().append(options);
         }
+    }
+
+    var offeredIngredients = [];
+    function getOfferedIngredients() {
+        $.ajax("/Home/getOfferedIngredients",
+            {
+                type: "GET",
+                url: "/Home/getOfferedIngredients",
+
+                success: function (data) {
+                    offeredIngredients = data;
+                    console.log("success - Home/getOfferedIngredients");
+                    setOfferedIngredients();
+                },
+                failure: function (data) {
+                    console.log("failure - Home/getOfferedIngredients");
+                },
+                error: function (data) {
+                    console.log("error - Home/getOfferedIngredients");
+                }
+            }
+        );
+    }
+
+    function setOfferedIngredients() {
+        $(".offeredIngredients").last().autocomplete({
+            source: offeredIngredients
+        });
     }
 </script>
