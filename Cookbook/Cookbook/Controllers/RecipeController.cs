@@ -193,6 +193,7 @@ namespace Cookbook.Controllers
             Recipe recipe = new Recipe();
             recipe.Name = recipeViewModel.Recipe.Name;
             recipe.ApplicationUser = await _userManager.GetUserAsync(HttpContext.User);
+            recipe.Public = recipeViewModel.Recipe.Public;
 
             recipe.RecipeIngredients = new List<RecipeIngredient>();
             foreach (var x in recipeViewModel.Recipe.Ingredients)

@@ -11,7 +11,7 @@
                     <label asp-for="Recipe.Name" class="label">Recipe name</label>
                 </div>
                 <div>
-                    <input asp-for="Recipe.Name" class="form-control"/>
+                    <input asp-for="Recipe.Name" class="form-control" />
                 </div>
             </div>
         </div>
@@ -24,17 +24,17 @@
                         <div class="flex-container-row">
                             <label asp-for="Recipe.Ingredients[0].Name" class="label">Name</label>
                             <div>
-                                <input asp-for="Recipe.Ingredients[0].Name" id="ingredient-name-0" class="form-control offeredIngredients"/>
+                                <input asp-for="Recipe.Ingredients[0].Name" id="ingredient-name-0" class="form-control offeredIngredients" />
                             </div>
 
                             <label asp-for="Recipe.Ingredients[0].Amount" class="label">Amount</label>
                             <div>
-                                <input asp-for="Recipe.Ingredients[0].Amount" id="ingredient-amount-0" class="form-control"/>
+                                <input asp-for="Recipe.Ingredients[0].Amount" id="ingredient-amount-0" class="form-control" />
                             </div>
 
                             <label asp-for="Recipe.Ingredients[0].MeasuringUnit" class="label">MeasuringUnit</label>
                             <div>
-                                <select asp-for="Recipe.Ingredients[0].MeasuringUnit" id="ingredient-measuringUnit-0" class="form-control offeredMeasuringUnit"/></select>
+                                <select asp-for="Recipe.Ingredients[0].MeasuringUnit" id="ingredient-measuringUnit-0" class="form-control offeredMeasuringUnit" /></select>
                             </div>
                             <img src="~/images/delete-icon.png" class="icon color" alt="Delete!">
                         </div>
@@ -64,6 +64,13 @@
                     </div>
                 </div>
                 <img src="~/images/plus-icon.png" class="icon color" alt="New step" id="addInputsForStep">
+            </div>
+        </div>
+
+        <div class="flex-container-row section">
+            <div class="form-check">
+                <input asp-for="Recipe.Public" type="checkbox" class="form-check-input">
+                <label class="form-check-label" asp-for="Recipe.Public">Public</label>
             </div>
         </div>
 
