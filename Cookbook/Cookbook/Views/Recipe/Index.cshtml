@@ -64,6 +64,13 @@
             </table>
         </div>
 
+        <div class="flex-container-row section">
+            <div class="form-check">
+                <input asp-for="Recipe.Public" type="checkbox" class="form-check-input" disabled>
+                <label class="form-check-label" asp-for="Recipe.Public">Public</label>
+            </div>
+        </div>
+
         @if (Model.UsersMatch == true)
         {
             <div class="buttons">

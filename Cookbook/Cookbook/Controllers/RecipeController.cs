@@ -35,6 +35,7 @@ namespace Cookbook.Controllers
                 {
                     Name = recipe.Name,
                     RecipeId = recipe.RecipeId,
+                    Public = recipe.Public
                 }
             };
 

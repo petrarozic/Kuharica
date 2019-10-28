@@ -12,5 +12,7 @@ namespace Cookbook.DTO
         public List<IngredientDTO> Ingredients { get; set; }
         public List<StepDTO> Steps { get; set; }
         public string UserEmail { get; set; }
+
+        public bool Public { get; set; }
     }
 }
