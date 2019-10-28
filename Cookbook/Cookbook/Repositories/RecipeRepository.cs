@@ -11,14 +11,44 @@ namespace Cookbook.Repositories
     public class RecipeRepository : IRecipeRepository
     {
         private readonly AppDbContext _appDbContext;
+        private readonly IIngredientRepository _ingredientRepository;
 
-        public RecipeRepository(AppDbContext appDbContext)
+        public RecipeRepository(AppDbContext appDbContext, IIngredientRepository ingredientRepository)
         {
             _appDbContext = appDbContext;
+            _ingredientRepository = ingredientRepository;
         }
 
         public void AddRecipe(Recipe recipe)
         {
+            List<RecipeIngredient> recipeIngredients = recipe.RecipeIngredients.ToList();
+            recipe.RecipeIngredients = new List<RecipeIngredient>();
+            List<String> ingredientNames = _ingredientRepository.GetAllIngredientName().ToList();
+            foreach (var x in recipeIngredients)
+            {
+                if (ingredientNames.Contains(x.Ingredient.Name))
+                {
+                    recipe.RecipeIngredients.Add(
+                        new RecipeIngredient
+                        {
+                            Ingredient = _ingredientRepository.GetIngredientByName(x.Ingredient.Name),
+                            Amount = x.Amount,
+                            MeasuringUnit = x.MeasuringUnit
+                        });
+                }
+                else
+                {
+                    Ingredient ingredient = _ingredientRepository.AddIngredient(x.Ingredient.Name);
+                    recipe.RecipeIngredients.Add(
+                        new RecipeIngredient
+                        {
+                            Ingredient = ingredient,
+                            Amount = x.Amount,
+                            MeasuringUnit = x.MeasuringUnit
+                        });
+                }
+            }
+
             _appDbContext.Recipes.Add(recipe);
             _appDbContext.SaveChanges();
         }

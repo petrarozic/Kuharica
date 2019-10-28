@@ -9,5 +9,7 @@ namespace Cookbook.Interfaces
     public interface IIngredientRepository
     {
         IEnumerable<String> GetAllIngredientName();
+        Ingredient GetIngredientByName(string name);
+        Ingredient AddIngredient(string name);
     }
 }
