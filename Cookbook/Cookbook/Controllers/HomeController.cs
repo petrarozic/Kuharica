@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Cookbook.DTO;
 using Cookbook.Enums;
 using Cookbook.Interfaces;
+using Cookbook.Models;
 using Cookbook.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -57,16 +58,20 @@ namespace Cookbook.Controllers
 
             var homeViewModel = new HomeViewModel()
             {
-                Recipes = _recipeRepository.SearchRecipe(searchByName, ingredientNameForSearch)
-                                            .OrderBy(r => r.Name)
-                                            .Select(u => new RecipeDTO
-                                            {
-                                                Id = u.RecipeId,
-                                                Name = u.Name
-                                            })
-                                            .ToList(),
+                //Recipes = _recipeRepository.SearchRecipe(searchByName, ingredientNameForSearch)
+                //                            .OrderBy(r => r.Name)
+                //                            .Select(u => new RecipeDTO
+                //                            {
+                //                                Id = u.RecipeId,
+                //                                Name = u.Name
+                //                            })
+                //                            .ToList(),
                 searchByIngredients = searchByIngredients
             };
+
+            var tempRecipes = _recipeRepository.SearchRecipe(searchByName, ingredientNameForSearch)
+                                                        .OrderBy(r => r.Name);
+            homeViewModel.Recipes = SortRecipe(tempRecipes, ingredientNameForSearch); 
 
             return View("Index", homeViewModel);
         }
@@ -90,6 +95,47 @@ namespace Cookbook.Controllers
                 });
             }
             return Json(measuringUnitDTOs);
+        }
+
+        private List<RecipeDTO> SortRecipe(IEnumerable<Recipe> recipes, List<string> ingredientNameForSearch)
+        {
+            List<RecipeDTO> sortedList = new List<RecipeDTO>();
+
+            int maxNum = 0;
+            foreach (var x in recipes)
+            {
+                int tempNum = HowManyWantedIngredients(x, ingredientNameForSearch);
+                if (maxNum < tempNum) maxNum = tempNum;
+            }
+
+            for (int i = maxNum; i > -1; i--)
+            {
+                foreach (var x in recipes.ToList())
+                {
+                    int tempNum = HowManyWantedIngredients(x, ingredientNameForSearch);
+                    if (i == tempNum)
+                    {
+                        var recipe = new RecipeDTO()
+                        {
+                            Id = x.RecipeId,
+                            Name = x.Name
+                        };
+                        sortedList.Add(recipe);
+                        recipes.ToList().Remove(x);
+                    }
+                }
+            }
+            return sortedList;
+        }
+
+        private int HowManyWantedIngredients(Recipe recipe, List<string> ingredientNameForSearch)
+        {
+            int num = 0;
+            foreach (var x in recipe.RecipeIngredients)
+            {
+                if (ingredientNameForSearch.Contains(x.Ingredient.Name)) num++;
+            }
+            return num;
         }
     }
 }
