@@ -52,6 +52,8 @@
 
         $('input[value="Cancel"')[0].onclick = cancelButton;
         $('input[value="Reset"')[0].onclick = resetButton;
+
+        getOfferedMeasuringUnits();
     });
 
     function uploadRecipeData() {
@@ -78,9 +80,9 @@
     var stepNum = 0;
 
     function setRecipeData(data) {
-
+        console.log(data);
         $('input[name="Recipe.Name"]').val(data['recipe']['name']);
-        $('input[name="Recipe.Public"]').prop("checked", data['recipe']['public'])
+        //$('input[name="Recipe.Public"]').prop("checked", data['recipe']['public'])
 
         var i = 0;
         for (i = 0; i < data["recipe"]["ingredients"].length; i++) {
@@ -121,12 +123,11 @@
             labelMeasuringUnit.className = "label";
             labelMeasuringUnit.innerHTML = "MeasuringUnit";
             var divMeasuringUnit = document.createElement("div");
-            var inputMeasuringUnit = document.createElement("input");
+            var inputMeasuringUnit = document.createElement("select");
             inputMeasuringUnit.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].MeasuringUnit';
             inputMeasuringUnit.name = 'Recipe.Ingredients[' + ingredientNum + '].MeasuringUnit';
             inputMeasuringUnit.id = 'ingredient-measuringUnit-' + ingredientNum;
-            inputMeasuringUnit.className = "form-control";
-            inputMeasuringUnit.value = data["recipe"]["ingredients"][i]["measuringUnit"];
+            inputMeasuringUnit.className = "form-control offeredMeasuringUnit";
             divMeasuringUnit.appendChild(inputMeasuringUnit);
 
             var img1 = document.createElement("img");
@@ -147,6 +148,8 @@
 
             $("#Ingredients").append(ingredientDiv);
             ingredientNum += 1;
+            setOfferedMeasuringUnits();
+            inputMeasuringUnit.selectedIndex = data["recipe"]["ingredients"][i]["measuringUnit"];
         }
         var j = 0;
         for (j = 0; j < data["recipe"]["steps"].length; j++) {
@@ -291,11 +294,11 @@
         labelMeasuringUnit.className = "label";
         labelMeasuringUnit.innerHTML = "MeasuringUnit";
         var divMeasuringUnit = document.createElement("div");
-        var inputMeasuringUnit = document.createElement("input");
+        var inputMeasuringUnit = document.createElement("select");
         inputMeasuringUnit.htmlFor = 'Recipe.Ingredients[' + ingredientNum + '].MeasuringUnit';
         inputMeasuringUnit.name = 'Recipe.Ingredients[' + ingredientNum + '].MeasuringUnit';
         inputMeasuringUnit.id = 'ingredient-measuringUnit-' + ingredientNum;
-        inputMeasuringUnit.className = "form-control";
+        inputMeasuringUnit.className = "form-control offeredMeasuringUnit";
         divMeasuringUnit.appendChild(inputMeasuringUnit);
 
         var img1 = document.createElement("img");
@@ -380,4 +383,32 @@
         uploadRecipeData();
     }
 
+    var offeredMeasuringUnit = [];
+    function getOfferedMeasuringUnits() {
+        $.ajax(
+            {
+                type: "GET",
+                url: "/Home/getOfferedMeasuringUnits",
+
+                success: function (data) {
+                    offeredMeasuringUnit = data;
+                    console.log("success - Home/getOfferedMeasuringUnit");
+                },
+                failure: function (data) {
+                    console.log("failure - Home/getOfferedMeasuringUnit");
+                },
+                error: function (data) {
+                    console.log("error - Home/getOfferedMeasuringUnit");
+                }
+            });
+    }
+
+    function setOfferedMeasuringUnits() {
+        for (i = 0; i < offeredMeasuringUnit.length; i++) {
+            var options = document.createElement("option");
+            options.innerHTML = offeredMeasuringUnit[i].name;
+            options.value = offeredMeasuringUnit[i].value
+            $(".offeredMeasuringUnit").last().append(options);
+        }
+    }
 </script>
