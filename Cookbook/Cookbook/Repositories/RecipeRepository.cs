@@ -21,34 +21,7 @@ namespace Cookbook.Repositories
 
         public void AddRecipe(Recipe recipe)
         {
-            List<RecipeIngredient> recipeIngredients = recipe.RecipeIngredients.ToList();
-            recipe.RecipeIngredients = new List<RecipeIngredient>();
-            List<String> ingredientNames = _ingredientRepository.GetAllIngredientName().ToList();
-            foreach (var x in recipeIngredients)
-            {
-                if (ingredientNames.Contains(x.Ingredient.Name))
-                {
-                    recipe.RecipeIngredients.Add(
-                        new RecipeIngredient
-                        {
-                            Ingredient = _ingredientRepository.GetIngredientByName(x.Ingredient.Name),
-                            Amount = x.Amount,
-                            MeasuringUnit = x.MeasuringUnit
-                        });
-                }
-                else
-                {
-                    Ingredient ingredient = _ingredientRepository.AddIngredient(x.Ingredient.Name);
-                    recipe.RecipeIngredients.Add(
-                        new RecipeIngredient
-                        {
-                            Ingredient = ingredient,
-                            Amount = x.Amount,
-                            MeasuringUnit = x.MeasuringUnit
-                        });
-                }
-            }
-
+            recipe.RecipeIngredients = SetRecipeIngredients(recipe.RecipeIngredients.ToList());
             _appDbContext.Recipes.Add(recipe);
             _appDbContext.SaveChanges();
         }
@@ -66,13 +39,19 @@ namespace Cookbook.Repositories
             currentRecipe.Name = recipe.Name;
             currentRecipe.Public = recipe.Public;
             currentRecipe.Steps = recipe.Steps;
-            currentRecipe.RecipeIngredients = new List<RecipeIngredient>();
+            currentRecipe.RecipeIngredients = SetRecipeIngredients(recipe.RecipeIngredients);
+            _appDbContext.SaveChanges();
+        }
+
+        private List<RecipeIngredient> SetRecipeIngredients(ICollection<RecipeIngredient> recipeIngredients)
+        {
+            List<RecipeIngredient> setRecipeIngredients = new List<RecipeIngredient>();
             List<String> ingredientNames = _ingredientRepository.GetAllIngredientName().ToList();
-            foreach (var x in recipe.RecipeIngredients)
+            foreach (var x in recipeIngredients)
             {
                 if (ingredientNames.Contains(x.Ingredient.Name))
                 {
-                    currentRecipe.RecipeIngredients.Add(
+                    setRecipeIngredients.Add(
                         new RecipeIngredient
                         {
                             Ingredient = _ingredientRepository.GetIngredientByName(x.Ingredient.Name),
@@ -83,7 +62,7 @@ namespace Cookbook.Repositories
                 else
                 {
                     Ingredient ingredient = _ingredientRepository.AddIngredient(x.Ingredient.Name);
-                    currentRecipe.RecipeIngredients.Add(
+                    setRecipeIngredients.Add(
                         new RecipeIngredient
                         {
                             Ingredient = ingredient,
@@ -92,13 +71,13 @@ namespace Cookbook.Repositories
                         });
                 }
             }
-
-            _appDbContext.SaveChanges();
+            return setRecipeIngredients;
         }
 
-        public IEnumerable<Recipe> GetAllRecipe()
+        public IEnumerable<Recipe> GetAllRecipe(string userId)
         {
             return _appDbContext.Recipes
+                                .Where(r => r.ApplicationUser.Id == userId || r.Public == true)
                                 .Include(r => r.RecipeIngredients)
                                     .ThenInclude(r => r.Ingredient)
                                 .Include(r => r.Steps)
@@ -116,11 +95,11 @@ namespace Cookbook.Repositories
                                 .First();
         }
 
-        public IEnumerable<Recipe> SearchRecipe(string searchByName, List<string> searchByIngredients)
+        public IEnumerable<Recipe> SearchRecipe(string searchByName, List<string> searchByIngredients, string userId)
         {
-            if (String.IsNullOrEmpty(searchByName) && ListIsNullOrEmpty(searchByIngredients)) return GetAllRecipe();
-            if (!String.IsNullOrEmpty(searchByName) && ListIsNullOrEmpty(searchByIngredients)) return GetAllRecipeByName(searchByName);
-            if (String.IsNullOrEmpty(searchByName) && !ListIsNullOrEmpty(searchByIngredients)) return GetAllRecipeByIngredients(searchByIngredients);
+            if (String.IsNullOrEmpty(searchByName) && ListIsNullOrEmpty(searchByIngredients)) return GetAllRecipe(userId);
+            if (!String.IsNullOrEmpty(searchByName) && ListIsNullOrEmpty(searchByIngredients)) return GetAllRecipeByName(searchByName, userId);
+            if (String.IsNullOrEmpty(searchByName) && !ListIsNullOrEmpty(searchByIngredients)) return GetAllRecipeByIngredients(searchByIngredients, userId);
 
             return _appDbContext.Ingredients
                                 .Where(i => CaseInsensitiveContains(i.Name, searchByIngredients))
@@ -128,23 +107,25 @@ namespace Cookbook.Repositories
                                 .Select(ri => ri.Recipe)
                                 .Distinct()
                                 .Where(r => CaseInsensitiveContains(r.Name, searchByName))
+                                .Where(r => r.ApplicationUser.Id == userId || r.Public == true)
                                 .Include(r => r.RecipeIngredients)
                                     .ThenInclude(r => r.Ingredient)
                                 .Include(r => r.Steps)
                                 .Include(r => r.ApplicationUser);
         }
 
-        private IEnumerable<Recipe> GetAllRecipeByName(string searchByName)
+        private IEnumerable<Recipe> GetAllRecipeByName(string searchByName, string userId)
         {
             return _appDbContext.Recipes
                                 .Where(r => CaseInsensitiveContains(r.Name, searchByName))
+                                .Where(r => r.ApplicationUser.Id == userId || r.Public == true)
                                 .Include(r => r.RecipeIngredients)
                                     .ThenInclude(r => r.Ingredient)
                                 .Include(r => r.Steps)
                                 .Include(r => r.ApplicationUser);
         }
 
-        private IEnumerable<Recipe> GetAllRecipeByIngredients(List<string> searchByIngredients)
+        private IEnumerable<Recipe> GetAllRecipeByIngredients(List<string> searchByIngredients, string userId)
         {
             return _appDbContext.Ingredients
                                 .Where(i => CaseInsensitiveContains(i.Name, searchByIngredients))
@@ -152,6 +133,7 @@ namespace Cookbook.Repositories
                                 .Distinct()
                                 .Select(ri => ri.Recipe)
                                 .Distinct()
+                                .Where(r => r.ApplicationUser.Id == userId || r.Public == true)
                                 .Include(r => r.RecipeIngredients)
                                     .ThenInclude(r => r.Ingredient)
                                 .Include(r => r.Steps)

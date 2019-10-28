@@ -8,6 +8,7 @@ using Cookbook.Interfaces;
 using Cookbook.Models;
 using Cookbook.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -19,19 +20,22 @@ namespace Cookbook.Controllers
     {
         private readonly IRecipeRepository _recipeRepository;
         private readonly IIngredientRepository _ingredientRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public HomeController(IRecipeRepository recipeRepository, IIngredientRepository ingredientRepository)
+        public HomeController(IRecipeRepository recipeRepository, IIngredientRepository ingredientRepository, UserManager<ApplicationUser> userManager)
         {
             _recipeRepository = recipeRepository;
             _ingredientRepository = ingredientRepository;
+            _userManager = userManager;
         }
 
         // GET: /<controller>/
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var applicationUser = await _userManager.GetUserAsync(HttpContext.User);
             HomeViewModel homeViewModel = new HomeViewModel()
             {
-                Recipes = _recipeRepository.GetAllRecipe()
+                Recipes = _recipeRepository.GetAllRecipe(applicationUser.Id)
                                             .OrderBy(r => r.Name)
                                             .Select(u => new RecipeDTO
                                             {
@@ -46,7 +50,7 @@ namespace Cookbook.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search(string searchByName, List<IngredientDTO> searchByIngredients)
+        public async Task<IActionResult> Search(string searchByName, List<IngredientDTO> searchByIngredients)
         {
             searchByIngredients.RemoveAll(x => String.IsNullOrWhiteSpace(x.Name));
 
@@ -69,7 +73,8 @@ namespace Cookbook.Controllers
                 searchByIngredients = searchByIngredients
             };
 
-            var tempRecipes = _recipeRepository.SearchRecipe(searchByName, ingredientNameForSearch)
+            var applicationUser = await _userManager.GetUserAsync(HttpContext.User);
+            var tempRecipes = _recipeRepository.SearchRecipe(searchByName, ingredientNameForSearch, applicationUser.Id)
                                                         .OrderBy(r => r.Name);
             homeViewModel.Recipes = SortRecipe(tempRecipes, ingredientNameForSearch); 
 

@@ -8,11 +8,11 @@ namespace Cookbook.Interfaces
 {
     public interface IRecipeRepository
     {
-        IEnumerable<Recipe> GetAllRecipe();
+        IEnumerable<Recipe> GetAllRecipe(string userId);
         Recipe GetRecipeById(int recipeId);
         void AddRecipe(Recipe recipe);
         void EditRecipe(Recipe updatedRecipe);
         void DeleteRecipe(int recipeId);
-        IEnumerable<Recipe> SearchRecipe(string searchByName, List<string> searchByIngredient);
+        IEnumerable<Recipe> SearchRecipe(string searchByName, List<string> searchByIngredient, string userId);
     }
 }
