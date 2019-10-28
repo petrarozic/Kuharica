@@ -8,6 +8,6 @@ namespace Cookbook.Interfaces
 {
     public interface IIngredientRepository
     {
-        IEnumerable<Ingredient> GetAllIngredient();
+        IEnumerable<String> GetAllIngredientName();
     }
 }

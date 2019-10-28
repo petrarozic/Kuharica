@@ -74,12 +74,7 @@ namespace Cookbook.Controllers
         [HttpGet]
         public JsonResult getOfferedIngredients()
         {
-            var ingredients = _ingredientRepository.GetAllIngredient()
-                .Select(i => i.Name)
-                .Distinct()
-                .ToList();
-
-            return Json(ingredients);
+            return Json(_ingredientRepository.GetAllIngredientName().ToList());
         }
 
         [HttpGet]

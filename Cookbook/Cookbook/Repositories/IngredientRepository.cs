@@ -16,9 +16,11 @@ namespace Cookbook.Repositories
             _appDbContext = appDbContext;
         }
 
-        public IEnumerable<Ingredient> GetAllIngredient()
+        public IEnumerable<String> GetAllIngredientName()
         {
-            return _appDbContext.Ingredients;
+            return _appDbContext.Ingredients
+                                .Select(i => i.Name)
+                                .Distinct();
         }
     }
 }
