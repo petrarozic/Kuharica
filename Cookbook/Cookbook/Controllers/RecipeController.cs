@@ -29,6 +29,14 @@ namespace Cookbook.Controllers
         {
             Recipe recipe = _recipeRepository.GetRecipeById(recipeId);
 
+            var applicationUser = await _userManager.GetUserAsync(HttpContext.User);
+
+            if (recipe.ApplicationUser.Id != applicationUser.Id && recipe.Public == false)
+            {
+                ViewBag.Error = "You do not have permission to view this recipe";
+                return View("Warning");
+            }
+
             RecipeViewModel recipeViewModel = new RecipeViewModel()
             {
                 Recipe = new DTO.RecipeDetailDTO()
@@ -66,7 +74,6 @@ namespace Cookbook.Controllers
 
             recipeViewModel.Recipe.UserEmail = recipe.ApplicationUser.Email;
 
-            var applicationUser = await _userManager.GetUserAsync(HttpContext.User);
             if(recipe.ApplicationUser.Id == applicationUser.Id)
             {
                 recipeViewModel.UsersMatch = true;
