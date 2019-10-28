@@ -64,6 +64,7 @@ namespace Cookbook.Repositories
         {
             var currentRecipe = GetRecipeById(recipe.RecipeId);
             currentRecipe.Name = recipe.Name;
+            currentRecipe.Public = recipe.Public;
             currentRecipe.Steps = recipe.Steps;
             currentRecipe.RecipeIngredients = recipe.RecipeIngredients;
             _appDbContext.SaveChanges();

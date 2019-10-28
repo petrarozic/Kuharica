@@ -257,7 +257,8 @@ namespace Cookbook.Controllers
                     RecipeId = recipe.RecipeId,
                     Name = recipe.Name,
                     Ingredients = new List<IngredientDTO>(),
-                    Steps = new List<StepDTO>()
+                    Steps = new List<StepDTO>(),
+                    Public = recipe.Public
                 }
             };
 
@@ -302,6 +303,7 @@ namespace Cookbook.Controllers
             Recipe updatedRecipe = new Recipe();
             updatedRecipe.RecipeId = recipeViewModel.Recipe.RecipeId;
             updatedRecipe.Name = recipeViewModel.Recipe.Name;
+            updatedRecipe.Public = recipeViewModel.Recipe.Public;
 
             updatedRecipe.RecipeIngredients = new List<RecipeIngredient>();
             foreach (var x in recipeViewModel.Recipe.Ingredients)
