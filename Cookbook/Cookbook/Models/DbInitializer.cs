@@ -268,6 +268,19 @@ namespace Cookbook.Models
                 recept9.ApplicationUser = RandomUser(applicationUser1, applicationUser2);
 
                 context.SaveChanges();
+
+                recept0.Public = RandomPublic();
+                recept1.Public = RandomPublic();
+                recept2.Public = RandomPublic();
+                recept3.Public = RandomPublic();
+                recept4.Public = RandomPublic();
+                recept5.Public = RandomPublic();
+                recept6.Public = RandomPublic();
+                recept7.Public = RandomPublic();
+                recept8.Public = RandomPublic();
+                recept9.Public = RandomPublic();
+
+                context.SaveChanges();
             }
         }
 
@@ -282,6 +295,17 @@ namespace Cookbook.Models
                     return applicationUser2;
             }
             return null;
+        }
+
+        private static bool RandomPublic()
+        {
+            Random random = new Random();
+            switch (random.Next(1, 3))
+            {
+                case 1:
+                    return true;
+            }
+            return false;
         }
     }
 }

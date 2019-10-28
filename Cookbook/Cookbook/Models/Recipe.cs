@@ -13,5 +13,7 @@ namespace Cookbook.Models
         public ICollection<RecipeIngredient> RecipeIngredients { get; set; }
         public ICollection<Step> Steps { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
+
+        public bool Public { get; set; }
     }
 }
