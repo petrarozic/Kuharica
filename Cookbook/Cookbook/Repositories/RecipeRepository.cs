@@ -66,7 +66,33 @@ namespace Cookbook.Repositories
             currentRecipe.Name = recipe.Name;
             currentRecipe.Public = recipe.Public;
             currentRecipe.Steps = recipe.Steps;
-            currentRecipe.RecipeIngredients = recipe.RecipeIngredients;
+            currentRecipe.RecipeIngredients = new List<RecipeIngredient>();
+            List<String> ingredientNames = _ingredientRepository.GetAllIngredientName().ToList();
+            foreach (var x in recipe.RecipeIngredients)
+            {
+                if (ingredientNames.Contains(x.Ingredient.Name))
+                {
+                    currentRecipe.RecipeIngredients.Add(
+                        new RecipeIngredient
+                        {
+                            Ingredient = _ingredientRepository.GetIngredientByName(x.Ingredient.Name),
+                            Amount = x.Amount,
+                            MeasuringUnit = x.MeasuringUnit
+                        });
+                }
+                else
+                {
+                    Ingredient ingredient = _ingredientRepository.AddIngredient(x.Ingredient.Name);
+                    currentRecipe.RecipeIngredients.Add(
+                        new RecipeIngredient
+                        {
+                            Ingredient = ingredient,
+                            Amount = x.Amount,
+                            MeasuringUnit = x.MeasuringUnit
+                        });
+                }
+            }
+
             _appDbContext.SaveChanges();
         }
 
